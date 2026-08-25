@@ -7,35 +7,85 @@
 <meta name="description" content="Your own AI at home, a robot companion, and apps to reach them anywhere, all on your own hardware, never the cloud.">
 <link rel="icon" href="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-brand-icon.png">
 <style>
-  :root { color-scheme: light dark; }
+  :root { color-scheme: light dark;
+    --bg: #ffffff; --fg: #1a1a2e; --card: #f6f5fb; --muted: #5b5b70;
+    --accent: #6d28d9; --accent-fg: #ffffff; }
+  @media (prefers-color-scheme: dark) { :root {
+    --bg: #0f0f17; --fg: #f2f2f7; --card: #1a1a26; --muted: #a0a0b8;
+    --accent: #8b5cf6; --accent-fg: #ffffff; } }
+  * { box-sizing: border-box; }
   body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-         display: flex; min-height: 100vh; align-items: center; justify-content: center;
-         background: #ffffff; color: #1a1a2e; text-align: center; }
-  @media (prefers-color-scheme: dark) { body { background: #0f0f17; color: #f2f2f7; } }
-  main { padding: 2rem; max-width: 34rem; }
-  img.logo { width: min(320px, 80vw); height: auto; }
-  p.pitch { font-size: 1.1rem; line-height: 1.6; margin: 1.5rem 0 2rem; }
-  .buttons a { display: inline-block; margin: 0.4rem; padding: 0.8rem 1.4rem; border-radius: 999px;
-               text-decoration: none; font-weight: 600; }
-  a.primary { background: #6d28d9; color: #ffffff; }
-  a.secondary { border: 2px solid #6d28d9; color: #6d28d9; }
-  @media (prefers-color-scheme: dark) { a.secondary { color: #b794f6; border-color: #b794f6; } }
-  footer { margin-top: 2.5rem; font-size: 0.85rem; opacity: 0.7; }
+         background: var(--bg); color: var(--fg); line-height: 1.6; }
+  header { text-align: center; padding: 4rem 1.5rem 2.5rem; }
+  header img.logo { width: min(360px, 85vw); height: auto; }
+  header p.pitch { font-size: 1.15rem; max-width: 38rem; margin: 1.25rem auto 0; color: var(--muted); }
+  .products { display: grid; gap: 1.25rem; padding: 1.5rem; max-width: 72rem; margin: 0 auto;
+              grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .card { background: var(--card); border-radius: 1rem; padding: 1.75rem; display: flex;
+          flex-direction: column; align-items: flex-start; }
+  .card img { width: 72px; height: 72px; }
+  .card h2 { margin: 1rem 0 0.25rem; font-size: 1.25rem; }
+  .card p { margin: 0.25rem 0 1rem; color: var(--muted); font-size: 0.97rem; flex: 1; }
+  .card a.btn { background: var(--accent); color: var(--accent-fg); text-decoration: none;
+                padding: 0.55rem 1.1rem; border-radius: 999px; font-weight: 600; font-size: 0.92rem; }
+  .card span.soon { color: var(--muted); font-weight: 600; font-size: 0.92rem;
+                    border: 2px solid var(--muted); border-radius: 999px; padding: 0.45rem 1rem; opacity: 0.8; }
+  footer { text-align: center; padding: 2.5rem 1.5rem 3rem; font-size: 0.85rem; color: var(--muted); }
   footer a { color: inherit; }
 </style>
 </head>
 <body>
-<main>
+<header>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-brand-logo-dark.png">
     <img class="logo" src="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-brand-logo-light.png" alt="MaiPai">
   </picture>
   <p class="pitch">Your own AI at home, a robot companion, and apps to reach them anywhere, all on your own hardware, never the cloud.</p>
-  <div class="buttons">
-    <a class="primary" href="https://getmaipai.github.io/home/">MaiPai Home documentation</a>
-    <a class="secondary" href="https://github.com/getmaipai">GitHub</a>
+</header>
+
+<section class="products">
+  <div class="card">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-home-icon-dark.png">
+      <img src="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-home-icon-light.png" alt="">
+    </picture>
+    <h2>MaiPai Home</h2>
+    <p>Your own AI, music, videos, podcasts, maps, books, and more, on your own hardware, online or offline - for protection, privacy, and independence.</p>
+    <a class="btn" href="https://getmaipai.github.io/home/">Get started</a>
   </div>
-  <footer>Say it like "my pie". Built by <a href="https://github.com/JesseWebDotCom">Jesse Torres</a>. No cookies, no tracking, nothing collected.</footer>
-</main>
+  <div class="card">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-desktop-icon-dark.png">
+      <img src="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-desktop-icon-light.png" alt="">
+    </picture>
+    <h2>MaiPai Desktop</h2>
+    <p>Mac and Windows app for your MaiPai Home and Bot, right on your desktop, integrated with your dock and your computer.</p>
+    <a class="btn" href="https://getmaipai.github.io/home/user/features/desktop/">Learn more</a>
+  </div>
+  <div class="card">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-go-icon-dark.png">
+      <img src="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-go-icon-light.png" alt="">
+    </picture>
+    <h2>MaiPai Go</h2>
+    <p>iPhone and Apple TV app for your MaiPai Home and Bot: your own AI, media, and robot companion, wherever you are.</p>
+    <span class="soon">In the workshop</span>
+  </div>
+  <div class="card">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-bot-icon-dark.png">
+      <img src="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-bot-icon-light.png" alt="">
+    </picture>
+    <h2>MaiPai Bot</h2>
+    <p>A robot friend with its own onboard AI: it sees, hears, talks, thinks, moves, self-charges, and guards your home in sentry mode. It recognizes each person by face and voice, keeps its own memories of people, facts, and experiences, and learns and evolves with your family.</p>
+    <span class="soon">In the workshop</span>
+  </div>
+</section>
+
+<footer>
+  Say it like "my pie". Open source on <a href="https://github.com/getmaipai">GitHub</a>.
+  Built by <a href="https://github.com/JesseWebDotCom">Jesse Torres</a>.<br>
+  No cookies, no tracking, nothing collected.
+</footer>
 </body>
 </html>
