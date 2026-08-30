@@ -192,7 +192,9 @@ and both are off by default. In your ssh session:</p>
 <p>The session drops as it reboots. Wait for the login prompt on the
 screen again, <code dir="auto">ssh maipai@maipai-bot.local</code> back in, and check:</p>
 <div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">ls</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">/dev/spidev0.0</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">/dev/spidev0.1</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">/dev/i2c-1</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="ls /dev/spidev0.0 /dev/spidev0.1 /dev/i2c-1"><div></div></button></div></figure></div>
-<p>You’ll know it worked when it lists all three with no “No such file”.</p>
+<p>You’ll know it worked when it prints the three names back (order varies):</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#abb2bf">/dev/i2c-1  /dev/spidev0.0  /dev/spidev0.1</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="/dev/i2c-1  /dev/spidev0.0  /dev/spidev0.1"><div></div></button></div></figure></div>
+<p>A missing one shows as <code dir="auto">No such file or directory</code> instead.</p>
 </li>
 <li>
 <p><strong>Install the system packages the robot needs.</strong></p>
