@@ -95,20 +95,22 @@ Pi in general, follow Raspberry Pi’s own
 </ul><p><strong>Tools</strong></p><ul>
 <li>Another computer on the same Wi-Fi as the Pi, with a free USB port
 for the enclosure while you flash it</li>
-</ul><p><strong>Not needed:</strong> a monitor, keyboard, or mouse. The Pi never gets any of
-them. You set it up over Wi-Fi from your other computer, and from step 4
-on, every command on this page is typed in that <code dir="auto">ssh</code> session.</p><p>No wiring on this page. About 30 minutes, most of it waiting on downloads.</p> </div> </aside>
+</ul><p><strong>Not needed:</strong> a monitor, keyboard, or mouse for the Pi. It never gets
+any of them. Steps 1 and 2 happen on your other computer; from step 3 on
+you talk to the Pi over Wi-Fi in an <code dir="auto">ssh</code> session from that same computer.</p><p>No wiring on this page. About 30 minutes, most of it waiting on downloads.</p> </div> </aside>
 <ol role="list" class="sl-steps">
 <li>
 <p><strong>Put the SSD in its enclosure</strong> and plug the enclosure into your other
 computer.</p>
 </li>
 <li>
-<p><strong>Flash Raspberry Pi OS Lite (64-bit) onto the SSD.</strong> Use Raspberry Pi
-Imager and pick the enclosure as the storage device. Lite, not Desktop:
-the robot has no monitor and the desktop only costs memory. In the
-imager’s settings, set the hostname to <code dir="auto">maipai-bot</code>, turn on SSH, and
-enter your Wi-Fi.</p>
+<p><strong>Flash Raspberry Pi OS Lite (64-bit) onto the SSD, from your other
+computer.</strong> Open Raspberry Pi Imager there, choose Raspberry Pi 5, then
+<strong>Raspberry Pi OS Lite (64-bit)</strong>, then the enclosure as the storage
+device. Lite, not Desktop: the robot has no monitor and the desktop only
+costs memory. In the imager’s settings, set the hostname to <code dir="auto">maipai-bot</code>,
+turn on SSH, and enter your Wi-Fi. The Pi is still in its box for this
+step.</p>
 </li>
 <li>
 <p><strong>Move the enclosure to the Pi and boot.</strong> Plug it into one of the Pi’s
