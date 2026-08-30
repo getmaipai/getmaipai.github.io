@@ -164,13 +164,22 @@ blue USB 3 port</strong> (the blue pair is USB 3; the black pair is USB 2 and
 is spoken for by other parts later). The bottom blue port is the boot
 drive’s port for good; the top blue one is kept free for a hub in the
 body stage. A Pi 5 boots from USB out of the box when no SD card
-is present. Power up. The screen shows the boot messages and, after a minute or so,
-a <code dir="auto">maipai-bot login:</code> prompt. You’ll know it worked when
-<code dir="auto">ssh maipai@maipai-bot.local</code> from your other computer gets you a
-prompt.
-Stay in that session: everything from here on is typed into it, and
-that is how the robot is managed for good (there is no screen to plug
-into).</p>
+is present. Power up.</p>
+<p><strong>How you know it’s up and reachable</strong>, in order:</p>
+<ol>
+<li>The screen scrolls boot messages, then settles on a
+<code dir="auto">maipai-bot login:</code> prompt with a line above it reading
+<code dir="auto">My IP address is ...</code>. That is the Pi on your Wi-Fi. Takes a minute
+or two on the first boot (it grows the file system and reboots once).</li>
+<li>From your other computer, <code dir="auto">ping maipai-bot.local</code> answers (press
+Ctrl-C to stop it). If the name doesn’t resolve, use the IP address
+from the screen instead, in this and every later command.</li>
+<li><code dir="auto">ssh maipai@maipai-bot.local</code> asks for the password you set and gives
+you a <code dir="auto">maipai@maipai-bot:~ $</code> prompt.</li>
+</ol>
+<p>Stay in that session: everything from here on is typed into it, and
+that is how the robot is managed for good. The touchscreen only shows
+you what the Pi is doing.</p>
 <p>If it never appears on the network, the Pi’s bootloader may be old:
 use Imager’s <strong>Misc Utility Images → Bootloader → USB Boot</strong> on any
 spare SD card, boot the Pi from that once (green LED blinks steadily
