@@ -85,7 +85,9 @@ svg:where(.astro-c6vsoqas){color:var(--sl-icon-color);font-size:var(--sl-icon-si
 Pi in general, follow Raspberry Pi’s own
 <a href="https://www.raspberrypi.com/documentation/computers/getting-started.html">getting started guide</a>.</p>
 <aside aria-label="What you need for this page" class="starlight-aside starlight-aside--note"> <p class="starlight-aside__title" aria-hidden="true"> <svg aria-hidden="true" class="starlight-aside__icon astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 11a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm.38-3.92a1 1 0 0 0-.76 0 1 1 0 0 0-.33.21 1.15 1.15 0 0 0-.21.33 1 1 0 0 0 .21 1.09c.097.088.209.16.33.21A1 1 0 0 0 13 8a1.05 1.05 0 0 0-.29-.71 1 1 0 0 0-.33-.21ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z"/></svg> What you need for this page </p> <div class="starlight-aside__content"> <p><strong>Parts</strong></p><ul>
-<li>Raspberry Pi 5 (16 GB) with the Active Cooler fitted</li>
+<li>Raspberry Pi 5 (16 GB) and its Active Cooler</li>
+<li>Raspberry Pi AI HAT+ 2, with the extra-tall 2x20 stacking header</li>
+<li>Waveshare UPS HAT (E) and its four 21700 cells</li>
 <li>Official 27 W USB-C power supply</li>
 <li>The M.2 SSD in its USB 3 enclosure (the boot drive)</li>
 <li>The 5 inch DSI touchscreen (Freenove, 800x480) with the <strong>50 cm Pi 5
@@ -106,6 +108,26 @@ start up, but you type nothing on the Pi: steps 1 and 2 happen on your
 other computer, and from step 5 on you talk to the Pi over Wi-Fi in an
 <code dir="auto">ssh</code> session from that same computer.</p><p>No wiring on this page. About 30 minutes, most of it waiting on downloads.</p> </div> </aside>
 <ol role="list" class="sl-steps">
+<li>
+<p><strong>Build the compute stack.</strong> The Pi, its UPS, and its AI HAT are one
+unit for the life of the robot, so they go together now. Bottom to top:</p>
+<ul>
+<li><strong>UPS HAT (E) under the Pi.</strong> Fit the four 21700 cells (polarity is
+marked in each bay; all four the same way), then mount the Pi on top
+of the UPS so the UPS’s pogo pins meet the pads on the Pi’s underside,
+following <a href="https://www.waveshare.com/wiki/UPS_HAT_(E)">Waveshare’s guide</a>.
+Leave the UPS’s battery switch <strong>off</strong> until the stack is complete.</li>
+<li><strong>Active Cooler on the Pi</strong>, per the cooler’s own instructions.</li>
+<li><strong>Extra-tall stacking header</strong> onto the Pi’s 40-pin header, then the
+<strong>AI HAT+ 2</strong> on top of that, on the 16 mm standoffs from its box, with
+its PCIe ribbon into the Pi’s PCIe connector, following
+<a href="https://www.raspberrypi.com/documentation/accessories/ai-hat-plus.html">Raspberry Pi’s AI HAT+ guide</a>.
+The tall header’s pins stick up through the HAT: that is where the
+robot’s wiring attaches later.</li>
+</ul>
+<p>Power comes in through the <strong>UPS’s USB-C input</strong>, not the Pi’s own USB-C
+port, from here on. On the bench that’s the official 27 W supply.</p>
+</li>
 <li>
 <p><strong>Put the SSD in its enclosure</strong> and plug the enclosure into your other
 computer.</p>
@@ -128,7 +150,7 @@ paste your public key in; if you’re not sure, that’s not you.)</li>
 that goes through Raspberry Pi’s cloud, and nothing on this robot
 goes through anyone’s cloud. You reach the Pi over your own Wi-Fi.</li>
 </ul>
-<p>The Pi is still in its box for this step.</p>
+<p>The Pi stays unpowered for this step.</p>
 </li>
 <li>
 <p><strong>Connect the touchscreen.</strong> With the Pi unpowered, plug the 50 cm
@@ -164,7 +186,8 @@ blue USB 3 port</strong> (the blue pair is USB 3; the black pair is USB 2 and
 is spoken for by other parts later). The bottom blue port is the boot
 drive’s port for good; the top blue one is kept free for a hub in the
 body stage. A Pi 5 boots from USB out of the box when no SD card
-is present. Power up.</p>
+is present. Switch the UPS’s battery switch on, then plug the 27 W
+supply into the UPS’s USB-C input. The Pi powers up through the UPS.</p>
 <p><strong>How you know it’s up and reachable</strong>, in order:</p>
 <ol>
 <li>The screen scrolls boot messages, then settles on a
@@ -199,7 +222,12 @@ screen again, <code dir="auto">ssh maipai@maipai-bot.local</code> back in, and c
 <li>
 <p><strong>Update the system and install the packages the robot needs.</strong> A
 fresh image is weeks behind, so update first (a few minutes):</p>
-<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">apt</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">update</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">apt</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">full-upgrade</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-y</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">apt</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">install</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-y</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">git</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">build-essential</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">python3-dev</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">swig</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">liblgpio-dev</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">i2c-tools</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">rpicam-apps</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="sudo apt updatesudo apt full-upgrade -ysudo apt install -y git build-essential python3-dev swig liblgpio-dev i2c-tools rpicam-apps"><div></div></button></div></figure></div>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">apt</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">update</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">apt</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">full-upgrade</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-y</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">apt</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">install</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-y</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">git</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">build-essential</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">python3-dev</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">swig</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">liblgpio-dev</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">i2c-tools</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">rpicam-apps</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">hailo-all</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">rpi-eeprom-config</span><span style="--0:#ABB2BF"> > </span><span style="--0:#98C379">/tmp/boot.conf</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">grep</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-q</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">PSU_MAX_CURRENT</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">/tmp/boot.conf</span><span style="--0:#ABB2BF"> || </span><span style="--0:#56B6C2">echo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">PSU_MAX_CURRENT=</span><span style="--0:#D19A66">5000</span><span style="--0:#ABB2BF"> >> </span><span style="--0:#98C379">/tmp/boot.conf</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">rpi-eeprom-config</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">--apply</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">/tmp/boot.conf</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">reboot</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="sudo apt updatesudo apt full-upgrade -ysudo apt install -y git build-essential python3-dev swig liblgpio-dev i2c-tools rpicam-apps hailo-allsudo rpi-eeprom-config > /tmp/boot.confgrep -q PSU_MAX_CURRENT /tmp/boot.conf || echo PSU_MAX_CURRENT=5000 >> /tmp/boot.confsudo rpi-eeprom-config --apply /tmp/boot.confsudo reboot"><div></div></button></div></figure></div>
+<p><code dir="auto">hailo-all</code> is the AI HAT’s driver and tools. The <code dir="auto">rpi-eeprom-config</code>
+lines tell the Pi it may draw its full 5 A: the UPS feeds it through
+pogo pins, which skips the USB-C handshake that normally grants that,
+and without it the Pi throttles its USB ports. Both need the reboot.
+Ssh back in afterwards.</p>
 <p><code dir="auto">apt update</code> may print a couple of <code dir="auto">Err ... Packages.diff/Index</code> lines
 followed by <code dir="auto">Ign</code>: that is apt giving up on a shortcut and downloading
 the full file, not a failure. It ends with <code dir="auto">Fetched ... MB</code>.</p>
@@ -221,10 +249,11 @@ first run.</p>
 <div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">run</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">python</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-m</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">robot.bench.head</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">check</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="uv run python -m robot.bench.head check"><div></div></button></div></figure></div>
 <p>You’ll know it worked when it prints one line per head device and
 nothing crashes:</p>
-<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#abb2bf">eyes: ready (spidev0.0, spidev0.1; displays cannot be probed, run `eyes` to see them)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">mouth: ready (rpi_ws281x installed, data on GPIO19; LEDs cannot be probed, run `mouth`)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">pan-tilt: missing (no I2C device at 0x40; ...)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">shutter: ready (GPIO16 via gpiochip0; a switch cannot be probed, run `shutter`)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">camera: missing (the camera command ran but found no camera; ...)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">touch: missing (no I2C device at 0x5A; ...)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">something is missing (see above)</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="eyes: ready (spidev0.0, spidev0.1; displays cannot be probed, run &#x60;eyes&#x60; to see them)mouth: ready (rpi_ws281x installed, data on GPIO19; LEDs cannot be probed, run &#x60;mouth&#x60;)pan-tilt: missing (no I2C device at 0x40; ...)shutter: ready (GPIO16 via gpiochip0; a switch cannot be probed, run &#x60;shutter&#x60;)camera: missing (the camera command ran but found no camera; ...)touch: missing (no I2C device at 0x5A; ...)something is missing (see above)"><div></div></button></div></figure></div>
-<p><code dir="auto">ready</code> means the Pi side is set up for a part that can’t answer back
-until you run its own test; <code dir="auto">missing</code> is a part the Pi can look for and
-didn’t find, which is right, since nothing is plugged in. Now go
-<a href="../head/">build the head</a>.</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#abb2bf">eyes: ready (spidev0.0, spidev0.1; displays cannot be probed, run `eyes` to see them)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">mouth: ready (rpi_ws281x installed, data on GPIO19; LEDs cannot be probed, run `mouth`)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">pan-tilt: missing (no I2C device at 0x40; ...)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">shutter: ready (GPIO16 via gpiochip0; a switch cannot be probed, run `shutter`)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">camera: missing (the camera command ran but found no camera; ...)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">touch: missing (no I2C device at 0x5A; ...)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">ups: ok (UPS HAT (E) answers at I2C 0x2D)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">ai-hat: ok (/dev/hailo0, HAILO10H)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">something is missing (see above)</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="eyes: ready (spidev0.0, spidev0.1; displays cannot be probed, run &#x60;eyes&#x60; to see them)mouth: ready (rpi_ws281x installed, data on GPIO19; LEDs cannot be probed, run &#x60;mouth&#x60;)pan-tilt: missing (no I2C device at 0x40; ...)shutter: ready (GPIO16 via gpiochip0; a switch cannot be probed, run &#x60;shutter&#x60;)camera: missing (the camera command ran but found no camera; ...)touch: missing (no I2C device at 0x5A; ...)ups: ok (UPS HAT (E) answers at I2C 0x2D)ai-hat: ok (/dev/hailo0, HAILO10H)something is missing (see above)"><div></div></button></div></figure></div>
+<p><code dir="auto">ok</code> is a part the Pi found (the UPS and the AI HAT from step 1 should
+both say it); <code dir="auto">ready</code> means the Pi side is set up for a part that can’t
+answer back until you run its own test; <code dir="auto">missing</code> is a part the Pi can
+look for and didn’t find, which is right for the head parts, since none
+are plugged in yet. Now go <a href="../head/">build the head</a>.</p>
 </li>
 </ol> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/user/build/parts/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Parts list</span> </span> </a> <a href="/bot/user/build/head/" rel="next" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>  <span class="astro-u2l5gyhi"> Next <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Build the head, on the bench</span> </span> </a> </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>

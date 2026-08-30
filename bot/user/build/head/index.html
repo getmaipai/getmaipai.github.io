@@ -101,8 +101,8 @@ bench. The body comes later, and nothing you wire here changes when it does.</p>
 <li><code dir="auto">i2cdetect</code> and <code dir="auto">rpicam-still</code> from that page’s apt line</li>
 <li><code dir="auto">scp</code> or similar on your other computer, to look at the camera picture</li>
 </ul><p><strong>Tools</strong></p><ul>
-<li>Female-to-female jumper wires, about 40</li>
-<li>A 40-pin breakout board (or a breadboard)</li>
+<li>The 40-pin ribbon cable and screw-terminal breakout from the parts list</li>
+<li>Jumper wires and hookup wire, about 40 connections</li>
 <li>A small Phillips screwdriver</li>
 <li>A multimeter (optional, but it ends most arguments with a wire)</li>
 </ul><p>One afternoon, two if the LED layout or eye orientation needs sorting out.</p> </div> </aside>
@@ -115,9 +115,11 @@ LED panels and the servos run from the 5 V bench supply. Connect the 5 V
 supply’s negative to a Pi GND pin so they share a ground. Never feed the
 LEDs or servos from the Pi’s 5 V pins: 128 LEDs at full white pull almost
 8 A, and a servo’s start-up spike will reboot the Pi.</li>
-<li><strong>Pin names below are BCM GPIO numbers</strong>, with the physical header pin in
-parentheses. A breakout board prints the BCM numbers; on a bare header,
-count with the official <a href="https://pinout.xyz">pinout</a>.</li>
+<li><strong>Wire to the breakout, not the Pi.</strong> Plug the 40-pin ribbon onto the
+tall header sticking up through the AI HAT, and its other end into the
+screw-terminal breakout board. Every wire on this page lands on a
+labeled terminal there. Pin names below are BCM GPIO numbers, with the
+physical header pin in parentheses; the breakout prints both.</li>
 <li><strong>Test each part before adding the next.</strong> Every step ends with a command
 that proves the part works. If it doesn’t, stop and fix it; stacking a
 second unknown on top of the first is how afternoons disappear.</li>
