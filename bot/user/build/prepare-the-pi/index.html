@@ -86,8 +86,7 @@ Pi in general, follow Raspberry Pi’s own
 <a href="https://www.raspberrypi.com/documentation/computers/getting-started.html">getting started guide</a>.</p>
 <aside aria-label="What you need for this page" class="starlight-aside starlight-aside--note"> <p class="starlight-aside__title" aria-hidden="true"> <svg aria-hidden="true" class="starlight-aside__icon astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 11a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm.38-3.92a1 1 0 0 0-.76 0 1 1 0 0 0-.33.21 1.15 1.15 0 0 0-.21.33 1 1 0 0 0 .21 1.09c.097.088.209.16.33.21A1 1 0 0 0 13 8a1.05 1.05 0 0 0-.29-.71 1 1 0 0 0-.33-.21ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z"/></svg> What you need for this page </p> <div class="starlight-aside__content"> <p><strong>Parts</strong></p><ul>
 <li>Raspberry Pi 5 (16 GB) and its Active Cooler</li>
-<li>Raspberry Pi AI HAT+ 2 (and the extra-tall 2x20 stacking header, only
-if the HAT’s own header leaves no pins showing above it)</li>
+<li>Raspberry Pi AI HAT+ 2 and the extra-tall 2x20 stacking header</li>
 <li>Waveshare UPS HAT (E) and its four 21700 cells</li>
 <li>Official 27 W USB-C power supply</li>
 <li>The M.2 SSD in its USB 3 enclosure (the boot drive)</li>
@@ -119,14 +118,16 @@ of the UPS so the UPS’s pogo pins meet the pads on the Pi’s underside,
 following <a href="https://www.waveshare.com/wiki/UPS_HAT_(E)">Waveshare’s guide</a>.
 Leave the UPS’s battery switch <strong>off</strong> until the stack is complete.</li>
 <li><strong>Active Cooler on the Pi</strong>, per the cooler’s own instructions.</li>
-<li><strong>AI HAT+ 2</strong> on top, on the 16 mm standoffs from its box, with its
-PCIe ribbon into the Pi’s PCIe connector, following
+<li><strong>Extra-tall stacking header</strong> onto the Pi’s 40 pins: its black
+socket goes down over the pins, its long legs point up.</li>
+<li><strong>AI HAT+ 2</strong> on top: its own socket slides down over those long
+legs, on the 16 mm standoffs from its box, with its PCIe ribbon into
+the Pi’s PCIe connector, following
 <a href="https://www.raspberrypi.com/documentation/accessories/ai-hat-plus.html">Raspberry Pi’s AI HAT+ guide</a>.
-The robot’s wiring attaches to the 40 header pins that stick up
-through the HAT, so they need about 6 mm showing above it. Kits
-ship with a header that does this; if yours ends flush with the HAT,
-put the extra-tall stacking header on the Pi first and mount the HAT
-on that.</li>
+The header’s legs now poke up through the top of the HAT as bare
+pins: that is where the robot’s ribbon cable attaches. Without the
+tall header the HAT’s own socket is all that shows on top, and a
+ribbon cable has nothing to grip.</li>
 </ul>
 <p>Power comes in through the <strong>UPS’s USB-C input</strong>, not the Pi’s own USB-C
 port, from here on. On the bench that’s the official 27 W supply.</p>
