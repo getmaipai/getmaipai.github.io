@@ -95,7 +95,9 @@ Pi in general, follow Raspberry Pi’s own
 </ul><p><strong>Tools</strong></p><ul>
 <li>Another computer on the same Wi-Fi as the Pi, with a free USB port
 for the enclosure while you flash it</li>
-</ul><p>No wiring on this page. About 30 minutes, most of it waiting on downloads.</p> </div> </aside>
+</ul><p><strong>Not needed:</strong> a monitor, keyboard, or mouse. The Pi never gets any of
+them. You set it up over Wi-Fi from your other computer, and from step 4
+on, every command on this page is typed in that <code dir="auto">ssh</code> session.</p><p>No wiring on this page. About 30 minutes, most of it waiting on downloads.</p> </div> </aside>
 <ol role="list" class="sl-steps">
 <li>
 <p><strong>Put the SSD in its enclosure</strong> and plug the enclosure into your other
@@ -113,7 +115,10 @@ enter your Wi-Fi.</p>
 two <strong>blue USB 3 ports</strong> (the design reserves this port for the boot
 drive for good). A Pi 5 boots from USB out of the box when no SD card
 is present. Power up and wait a minute. You’ll know it worked when
-<code dir="auto">ssh maipai-bot.local</code> from your other computer gets you a prompt.</p>
+<code dir="auto">ssh maipai-bot.local</code> from your other computer gets you a prompt.
+Stay in that session: everything from here on is typed into it, and
+that is how the robot is managed for good (there is no screen to plug
+into).</p>
 <p>If it never appears on the network, the Pi’s bootloader may be old:
 use Imager’s <strong>Misc Utility Images → Bootloader → USB Boot</strong> on any
 spare SD card, boot the Pi from that once (green LED blinks steadily
