@@ -88,6 +88,10 @@ Pi in general, follow Raspberry Pi’s own
 <li>Raspberry Pi 5 (16 GB) with the Active Cooler fitted</li>
 <li>Official 27 W USB-C power supply</li>
 <li>The M.2 SSD in its USB 3 enclosure (the boot drive)</li>
+<li>The 5 inch DSI touchscreen (Freenove, 800x480) with a <strong>Pi 5 DSI cable,
+22-pin to 15-pin</strong> (newer kits include one; older kits ship only the
+15-pin cable, which does not fit a Pi 5)</li>
+<li>2 female-to-female jumper wires (screen power)</li>
 <li>No microSD card: the robot boots from the SSD</li>
 </ul><p><strong>Software</strong> (on your other computer)</p><ul>
 <li><a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a></li>
@@ -95,9 +99,11 @@ Pi in general, follow Raspberry Pi’s own
 </ul><p><strong>Tools</strong></p><ul>
 <li>Another computer on the same Wi-Fi as the Pi, with a free USB port
 for the enclosure while you flash it</li>
-</ul><p><strong>Not needed:</strong> a monitor, keyboard, or mouse for the Pi. It never gets
-any of them. Steps 1 and 2 happen on your other computer; from step 3 on
-you talk to the Pi over Wi-Fi in an <code dir="auto">ssh</code> session from that same computer.</p><p>No wiring on this page. About 30 minutes, most of it waiting on downloads.</p> </div> </aside>
+</ul><p><strong>Not needed:</strong> a keyboard, mouse, or HDMI monitor. The robot’s own
+touchscreen is the Pi’s screen from the first boot, so you can watch it
+start up, but you type nothing on the Pi: steps 1 and 2 happen on your
+other computer, and from step 5 on you talk to the Pi over Wi-Fi in an
+<code dir="auto">ssh</code> session from that same computer.</p><p>No wiring on this page. About 30 minutes, most of it waiting on downloads.</p> </div> </aside>
 <ol role="list" class="sl-steps">
 <li>
 <p><strong>Put the SSD in its enclosure</strong> and plug the enclosure into your other
@@ -124,12 +130,41 @@ goes through anyone’s cloud. You reach the Pi over your own Wi-Fi.</li>
 <p>The Pi is still in its box for this step.</p>
 </li>
 <li>
+<p><strong>Connect the touchscreen.</strong> With the Pi unpowered, plug the 22-to-15-pin
+DSI cable into the Pi’s <strong>CAM/DISP 0</strong> connector (the one farther from
+the board edge; CAM/DISP 1 next to it is the camera’s, later) and into
+the screen’s DSI connector. Lift each latch fully; the cable seats only
+one way. The screen takes its power from two header pins:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Screen</th><th>Pi header</th></tr></thead><tbody><tr><td>5V</td><td>pin 4 (5 V)</td></tr><tr><td>GND</td><td>pin 34 (GND)</td></tr></tbody></table>
+<p>Pi OS detects this screen on its own, no settings. On a Lite system it
+shows the text console: boot messages, then a login prompt. You will not
+type at it (no keyboard), but you can see what the Pi is doing.</p>
+</li>
+<li>
 <p><strong>Move the enclosure to the Pi and boot.</strong> Plug it into the <strong>bottom
 blue USB 3 port</strong> (the blue pair is USB 3; the black pair is USB 2 and
 is spoken for by other parts later). The bottom blue port is the boot
 drive’s port for good; the top blue one is kept free for a hub in the
 body stage. A Pi 5 boots from USB out of the box when no SD card
-is present. Power up and wait a minute. You’ll know it worked when
+is present. Power up. The screen shows the boot messages and, after a minute or so,
+a <code dir="auto">maipai-bot login:</code> prompt. You’ll know it worked when
 <code dir="auto">ssh maipai@maipai-bot.local</code> from your other computer gets you a
 prompt.
 Stay in that session: everything from here on is typed into it, and
