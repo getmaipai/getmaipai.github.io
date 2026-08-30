@@ -115,11 +115,16 @@ LED panels and the servos run from the 5 V bench supply. Connect the 5 V
 supply’s negative to a Pi GND pin so they share a ground. Never feed the
 LEDs or servos from the Pi’s 5 V pins: 128 LEDs at full white pull almost
 8 A, and a servo’s start-up spike will reboot the Pi.</li>
-<li><strong>Wire to the breakout, not the Pi.</strong> Plug the 40-pin ribbon onto the
-tall header sticking up through the AI HAT, and its other end into the
-screw-terminal breakout board. Every wire on this page lands on a
-labeled terminal there. Pin names below are BCM GPIO numbers, with the
-physical header pin in parentheses; the breakout prints both.</li>
+<li><strong>Wire to the breakout, not the Pi.</strong> The 40-pin ribbon (the flat grey
+cable with a black plug on each end) connects the pins on top of the AI
+HAT to the screw-terminal breakout board. Press one plug straight down
+onto the HAT’s pins with the cable’s <strong>marked stripe (pin 1) at the
+corner nearest the Pi’s SD card slot</strong>, away from the USB ports; the
+other plug is keyed and only fits the breakout one way. Every wire on
+this page then lands on a labeled screw terminal on the breakout, and
+the pins on the HAT are never touched again. Pin names below are BCM
+GPIO numbers, with the physical header pin in parentheses; the breakout
+prints both.</li>
 <li><strong>Test each part before adding the next.</strong> Every step ends with a command
 that proves the part works. If it doesn’t, stop and fix it; stacking a
 second unknown on top of the first is how afternoons disappear.</li>
