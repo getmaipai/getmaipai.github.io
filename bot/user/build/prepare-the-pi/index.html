@@ -108,9 +108,16 @@ computer.</p>
 computer.</strong> Open Raspberry Pi Imager there, choose Raspberry Pi 5, then
 <strong>Raspberry Pi OS Lite (64-bit)</strong>, then the enclosure as the storage
 device. Lite, not Desktop: the robot has no monitor and the desktop only
-costs memory. In the imager’s settings, set the hostname to <code dir="auto">maipai-bot</code>,
-turn on SSH, and enter your Wi-Fi. The Pi is still in its box for this
-step.</p>
+costs memory. In the imager’s settings:</p>
+<ul>
+<li>Hostname: <code dir="auto">maipai-bot</code></li>
+<li>Username: <code dir="auto">maipai</code> (this exact name; the robot’s software runs as this
+account later). Password: your choice, and write it down.</li>
+<li>Wi-Fi: your network name and password</li>
+<li>Services: turn on SSH. If you have an SSH key on your computer, paste
+the public key here too, so you log in without typing the password.</li>
+</ul>
+<p>The Pi is still in its box for this step.</p>
 </li>
 <li>
 <p><strong>Move the enclosure to the Pi and boot.</strong> Plug it into the <strong>bottom
@@ -119,7 +126,8 @@ is spoken for by other parts later). The bottom blue port is the boot
 drive’s port for good; the top blue one is kept free for a hub in the
 body stage. A Pi 5 boots from USB out of the box when no SD card
 is present. Power up and wait a minute. You’ll know it worked when
-<code dir="auto">ssh maipai-bot.local</code> from your other computer gets you a prompt.
+<code dir="auto">ssh maipai@maipai-bot.local</code> from your other computer gets you a
+prompt.
 Stay in that session: everything from here on is typed into it, and
 that is how the robot is managed for good (there is no screen to plug
 into).</p>
