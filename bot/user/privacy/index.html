@@ -116,7 +116,8 @@ house. There is no MaiPai server anywhere in the loop.</p>
 
 <table><thead><tr><th>Connection</th><th>When</th><th>What it carries</th><th>Who receives it</th></tr></thead><tbody><tr><td>Software download</td><td>Only when you install or update the robot’s software</td><td>The software itself, nothing about you</td><td>GitHub, where the project is published</td></tr><tr><td>AI model downloads</td><td>Only when you set up or update the robot, if you ask it to</td><td>The model files, nothing about you</td><td>The sites that publish those models</td></tr><tr><td>MaiPai Home</td><td>Only if you connect the robot to your own MaiPai Home hub, and only inside your home network</td><td>Conversations and status, so the hub can help</td><td>Your own hub, in your house</td></tr></tbody></table>
 <p>That’s the whole table. No usage reports, no crash reports, no accounts,
-no cloud. The robot works with the internet unplugged, and it is designed to
+no cloud. The build guide has you leave Raspberry Pi Connect (the Pi’s own
+cloud remote-access service) switched off for the same reason. The robot works with the internet unplugged, and it is designed to
 never need it at run time.</p>
 <h2 id="recording-is-never-secret">Recording is never secret</h2>
 <p>The robot can record video on request. When it does, three things happen at
