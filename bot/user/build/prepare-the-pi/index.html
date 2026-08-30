@@ -87,21 +87,39 @@ Pi in general, follow Raspberry Pi’s own
 <aside aria-label="What you need for this page" class="starlight-aside starlight-aside--note"> <p class="starlight-aside__title" aria-hidden="true"> <svg aria-hidden="true" class="starlight-aside__icon astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 11a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm.38-3.92a1 1 0 0 0-.76 0 1 1 0 0 0-.33.21 1.15 1.15 0 0 0-.21.33 1 1 0 0 0 .21 1.09c.097.088.209.16.33.21A1 1 0 0 0 13 8a1.05 1.05 0 0 0-.29-.71 1 1 0 0 0-.33-.21ZM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16.001A8 8 0 0 1 12 20Z"/></svg> What you need for this page </p> <div class="starlight-aside__content"> <p><strong>Parts</strong></p><ul>
 <li>Raspberry Pi 5 (16 GB) with the Active Cooler fitted</li>
 <li>Official 27 W USB-C power supply</li>
-<li>High-endurance microSD card, 128 GB or more</li>
+<li>The M.2 SSD in its USB 3 enclosure (the boot drive)</li>
+<li>No microSD card: the robot boots from the SSD</li>
 </ul><p><strong>Software</strong> (on your other computer)</p><ul>
 <li><a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a></li>
 <li>A terminal with <code dir="auto">ssh</code> (built into macOS, Linux, and Windows 11)</li>
 </ul><p><strong>Tools</strong></p><ul>
-<li>A microSD card reader</li>
-<li>Another computer on the same Wi-Fi as the Pi</li>
-</ul><p>No wiring on this page. About 30 minutes, most of it waiting.</p> </div> </aside>
+<li>Another computer on the same Wi-Fi as the Pi, with a free USB port
+for the enclosure while you flash it</li>
+</ul><p>No wiring on this page. About 30 minutes, most of it waiting on downloads.</p> </div> </aside>
 <ol role="list" class="sl-steps">
 <li>
-<p><strong>Flash Raspberry Pi OS Lite (64-bit).</strong> Use Raspberry Pi Imager. Lite,
-not Desktop: the robot has no monitor and the desktop only costs memory.
-In the imager’s settings, set the hostname to <code dir="auto">maipai-bot</code>, turn on SSH,
-and enter your Wi-Fi. You’ll know it worked when <code dir="auto">ssh maipai-bot.local</code>
-from your other computer gets you a prompt.</p>
+<p><strong>Put the SSD in its enclosure</strong> and plug the enclosure into your other
+computer. If you haven’t checked yet, this is when you find out whether
+your drive is SATA or NVMe: it doesn’t matter to the enclosure (its
+RTL9210B bridge takes both), but note it for the hardware record.</p>
+</li>
+<li>
+<p><strong>Flash Raspberry Pi OS Lite (64-bit) onto the SSD.</strong> Use Raspberry Pi
+Imager and pick the enclosure as the storage device. Lite, not Desktop:
+the robot has no monitor and the desktop only costs memory. In the
+imager’s settings, set the hostname to <code dir="auto">maipai-bot</code>, turn on SSH, and
+enter your Wi-Fi.</p>
+</li>
+<li>
+<p><strong>Move the enclosure to the Pi and boot.</strong> Plug it into one of the Pi’s
+two <strong>blue USB 3 ports</strong> (the design reserves this port for the boot
+drive for good). A Pi 5 boots from USB out of the box when no SD card
+is present. Power up and wait a minute. You’ll know it worked when
+<code dir="auto">ssh maipai-bot.local</code> from your other computer gets you a prompt.</p>
+<p>If it never appears on the network, the Pi’s bootloader may be old:
+use Imager’s <strong>Misc Utility Images → Bootloader → USB Boot</strong> on any
+spare SD card, boot the Pi from that once (green LED blinks steadily
+when done), remove it, and try the SSD again.</p>
 </li>
 <li>
 <p><strong>Turn on SPI and I2C.</strong> The eyes talk over SPI, the pan-tilt over I2C,
