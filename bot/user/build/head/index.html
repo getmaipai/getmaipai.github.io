@@ -101,8 +101,8 @@ bench. The body comes later, and nothing you wire here changes when it does.</p>
 <li><code dir="auto">i2cdetect</code> and <code dir="auto">rpicam-still</code> from that page’s apt line</li>
 <li><code dir="auto">scp</code> or similar on your other computer, to look at the camera picture</li>
 </ul><p><strong>Tools</strong></p><ul>
-<li>The 40-pin ribbon cable and screw-terminal breakout from the parts list</li>
-<li>Jumper wires and hookup wire, about 40 connections</li>
+<li>The 40-pin ribbon cable, a T-type GPIO breakout, and a breadboard</li>
+<li>Jumper wires, about 40</li>
 <li>A small Phillips screwdriver</li>
 <li>A multimeter (optional, but it ends most arguments with a wire)</li>
 </ul><p>One afternoon, two if the LED layout or eye orientation needs sorting out.</p> </div> </aside>
@@ -115,16 +115,19 @@ LED panels and the servos run from the 5 V bench supply. Connect the 5 V
 supply’s negative to a Pi GND pin so they share a ground. Never feed the
 LEDs or servos from the Pi’s 5 V pins: 128 LEDs at full white pull almost
 8 A, and a servo’s start-up spike will reboot the Pi.</li>
-<li><strong>Wire to the breakout, not the Pi.</strong> The 40-pin ribbon (the flat grey
-cable with a black plug on each end) connects the pins on top of the AI
-HAT to the screw-terminal breakout board. Press one plug straight down
-onto the HAT’s pins with the cable’s <strong>marked stripe (pin 1) at the
-corner nearest the Pi’s SD card slot</strong>, away from the USB ports; the
-other plug is keyed and only fits the breakout one way. Every wire on
-this page then lands on a labeled screw terminal on the breakout, and
-the pins on the HAT are never touched again. Pin names below are BCM
-GPIO numbers, with the physical header pin in parentheses; the breakout
-prints both.</li>
+<li><strong>Wire to the breakout, not the Pi.</strong> The 40-pin ribbon (the flat cable
+with a plug on each end) connects the pins on top of the AI HAT to a
+GPIO breakout: a T-shaped “GPIO extension board” pushed into a
+breadboard is the usual one. Press one plug straight down onto the
+HAT’s pins with the cable’s <strong>edge wire (pin 1, brown on a rainbow
+cable, or the red stripe on a grey one) at the corner nearest the Pi’s
+SD card slot</strong>, away from the USB ports; the other plug is keyed and
+only fits the breakout one way. Every wire on this page then goes into
+the breadboard row next to the matching label, and the pins on the HAT
+are never touched again. Pin names below are BCM GPIO numbers, with the
+physical header pin in parentheses. (In the body stage the head wires
+are re-run through the tower to a screw-terminal breakout so nothing
+shakes loose while driving; that board comes with the body, not now.)</li>
 <li><strong>Test each part before adding the next.</strong> Every step ends with a command
 that proves the part works. If it doesn’t, stop and fix it; stacking a
 second unknown on top of the first is how afternoons disappear.</li>
