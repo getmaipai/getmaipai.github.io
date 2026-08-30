@@ -266,7 +266,7 @@ mux can segment more than the ToFs if it gets flaky.</p>
 
 
 
-<table><thead><tr><th>Device</th><th>Where</th></tr></thead><tbody><tr><td>M.2 SSD enclosure (boot drive; the AI HAT owns the only PCIe lane)</td><td>USB3 #1, direct</td></tr><tr><td>4-port USB3 hub (service pod jacks, heart knob serial, rear camera)</td><td>USB3 #2</td></tr><tr><td>XVF3800 mic array (isochronous audio)</td><td>USB2 #1, direct, never behind a hub</td></tr><tr><td>Lidar (latency-sensitive)</td><td>USB2 #2, direct, never behind a hub</td></tr></tbody></table>
+<table><thead><tr><th>Device</th><th>Where</th></tr></thead><tbody><tr><td>M.2 SSD enclosure (boot drive; the AI HAT owns the only PCIe lane)</td><td>USB3 #1 = the bottom blue port, direct</td></tr><tr><td>4-port USB3 hub (service pod jacks, heart knob serial, rear camera)</td><td>USB3 #2 = the top blue port</td></tr><tr><td>XVF3800 mic array (isochronous audio)</td><td>USB2 #1, direct, never behind a hub</td></tr><tr><td>Lidar (latency-sensitive)</td><td>USB2 #2, direct, never behind a hub</td></tr></tbody></table>
 <p>Anything that needs USB only for 5 V gets its cable cut and wired to the
 peripheral buck.</p>
 <h2 id="power-rails">Power rails</h2>
