@@ -127,10 +127,23 @@ or wired without its GND, the data wire is long and unpaired (run it
 alongside a ground wire), or the 5 V supply is sagging (a phone charger with
 a cut cable is not a 3 A supply).</p>
 <h2 id="if-the-camera-isnt-detected">If the camera isn’t detected</h2>
-<p>Power off. Open both connector latches fully and reseat the cable; the
-contacts face the board’s contacts, and a cable that’s in at a slight angle
-reads as no camera. Use the Pi 5’s 22-pin connectors, not a Pi 4 cable. Then
-<code dir="auto">rpicam-still --list-cameras</code> should list the imx708.</p>
+<p><strong>If your camera is the Arducam version of Camera Module 3</strong> (the parts
+list allows it), it needs two config lines the official camera doesn’t.
+In your ssh session:</p>
+<div class="expressive-code"><link rel="stylesheet" href="/bot/_astro/ec.j85n7.css"><script type="module" src="/bot/_astro/ec.8zarh.js"></script><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">sed</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-i</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">'s/^camera_auto_detect=1/camera_auto_detect=0/'</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">/boot/firmware/config.txt</span></div></div><div class="ec-line"><div class="code"><span style="--0:#56B6C2">echo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">'dtoverlay=imx708'</span><span style="--0:#ABB2BF"> | </span><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">tee</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-a</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">/boot/firmware/config.txt</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">reboot</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="sudo sed -i &#x27;s/^camera_auto_detect=1/camera_auto_detect=0/&#x27; /boot/firmware/config.txtecho &#x27;dtoverlay=imx708&#x27; | sudo tee -a /boot/firmware/config.txtsudo reboot"><div></div></button></div></figure></div>
+<p>If it’s plugged into the CAM/DISP 0 connector, use <code dir="auto">dtoverlay=imx708,cam0</code>
+instead. This is Arducam’s own documented requirement.</p>
+<p><strong>If it’s still not found</strong>, the Pi is probing and the camera isn’t
+answering, which means the cable. Power off fully, open both connector
+latches, and reseat: at the Pi end the ribbon’s metal contacts face the
+middle of the board, away from the Ethernet and USB jacks; at the camera
+end they face the camera’s circuit board. Straight in, latch closed, and a
+gentle tug must not move it. A cable seated at a slight angle reads as no
+camera, and so does a flipped end. Use a Pi 5 camera cable (22-pin at the
+Pi end), not a Pi 4 one. Then <code dir="auto">rpicam-still --list-cameras</code> should list
+the imx708. The kernel’s view of the conversation is
+<code dir="auto">dmesg | grep -i imx708</code>: “failed to read chip id” means wiring, silence
+means the config lines above are missing.</p>
 <h2 id="if-the-servos-buzz-jitter-or-reboot-the-pi">If the servos buzz, jitter, or reboot the Pi</h2>
 <p>The servos are on the Pi’s 5 V. Move V+ to the bench supply. Jitter at rest
 with a proper supply usually means the arm is mounted so the centre position
