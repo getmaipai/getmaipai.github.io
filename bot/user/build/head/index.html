@@ -199,19 +199,23 @@ the other the right.</p>
 
 <table><thead><tr><th>Display pin</th><th>Left eye</th><th>Right eye</th></tr></thead><tbody><tr><td>GND</td><td>GND (pin 6)</td><td>GND (pin 9)</td></tr><tr><td>VCC</td><td>3.3 V (pin 1)</td><td>3.3 V (pin 17)</td></tr><tr><td>SCL</td><td>GPIO 11 (pin 23)</td><td>GPIO 11 (pin 23)</td></tr><tr><td>SDA</td><td>GPIO 10 (pin 19)</td><td>GPIO 10 (pin 19)</td></tr><tr><td>RST (sometimes RES)</td><td>GPIO 25 (pin 22)</td><td>GPIO 25 (pin 22)</td></tr><tr><td>DC</td><td>GPIO 6 (pin 31)</td><td>GPIO 6 (pin 31)</td></tr><tr><td>CS</td><td>GPIO 8 (pin 24)</td><td>GPIO 7 (pin 26)</td></tr><tr><td>BL (sometimes BLK)</td><td>3.3 V (pin 1)</td><td>3.3 V (pin 17)</td></tr></tbody></table>
 <p><img src="/bot/_astro/eye-wiring.BRflkzuQ_qb9NI.svg" alt="Eight colour-matched wires from the AI HAT&#x27;s 40-pin header to the display&#x27;s eight pins, with a table of row, column, and Pi pin for each." loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="760"></p>
-<p><strong>Reaching the GPIO past the AI HAT.</strong> The HAT covers the Pi’s 40 pins,
-and its own top socket is not usable: the Pi’s pins already fill the
-wells from below, so nothing can be pressed in from above and a Dupont
-jumper is far too short to reach a contact. The fix is an <strong>extra-tall
-2x20 stacking header</strong>, and it does not replace anything:</p>
+<p><strong>Reaching the GPIO past the AI HAT.</strong> The AI HAT+ 2 ships with a 16 mm
+stacking header that carries it above the Pi. That header is exactly long
+enough to reach the HAT and no further, so its pins fill the wells you
+can see on top and there is nothing left to connect to. Pressing pins in
+from above does not work, and a Dupont jumper cannot reach a contact.</p>
+<p><strong>Swap that stock header for an extra-tall 2x20 stacking header.</strong> The
+Pi’s own 40-pin header is soldered to the board and is never touched;
+what gets replaced is the HAT’s 16 mm one:</p>
 <ul>
-<li>Its socket pushes <strong>down onto the Pi’s existing soldered pins</strong>, which
-stay exactly where they are.</li>
-<li>Its long legs point up, pass all the way through the AI HAT’s socket,
-and stand proud on top. That is where the ribbon connects.</li>
-<li>The HAT now rides a few millimetres higher, so build the standoffs up
-from the M2.5 kit to support all four corners, and check the PCIe
-ribbon still reaches.</li>
+<li>Lift the AI HAT off and pull out the 16 mm header that came with it.</li>
+<li>Fit the extra-tall header in its place: socket down onto the Pi’s
+soldered pins, long legs pointing up.</li>
+<li>Put the HAT back on the legs. They now pass all the way through and
+stand proud on top, which is where the ribbon connects.</li>
+<li>The HAT rides a few millimetres higher, so build the standoffs up from
+the M2.5 kit to support all four corners, and check the PCIe ribbon
+still reaches.</li>
 </ul>
 <p>You’ll know it worked when the Hailo still enumerates: <code dir="auto">lspci | grep -i hailo</code> lists it, and <code dir="auto">robot.bench.head check</code> says <code dir="auto">ai-hat: ok</code>.</p>
 <p><strong>Ribbon, breakout, breadboard.</strong> Press the 40-pin ribbon onto those
