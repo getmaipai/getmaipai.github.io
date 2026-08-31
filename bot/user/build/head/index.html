@@ -108,14 +108,20 @@ bench. The body comes later, and nothing you wire here changes when it does.</p>
 </ul><p>One afternoon, two if the LED layout or eye orientation needs sorting out.</p> </div> </aside>
 <h2 id="ground-rules-for-the-bench">Ground rules for the bench</h2>
 <ul>
-<li><strong>Power off while wiring.</strong> Pull the Pi’s USB-C and the 5 V supply before
-touching a wire. Both, every time.</li>
-<li><strong>Two supplies, one ground.</strong> The Pi runs from its own USB-C supply. The
+<li>
+<p><strong>Power off while wiring.</strong> Pull the Pi’s USB-C and the 5 V supply before
+touching a wire. Both, every time.</p>
+</li>
+<li>
+<p><strong>Two supplies, one ground.</strong> The Pi runs from its own USB-C supply. The
 LED panels and the servos run from the 5 V bench supply. Connect the 5 V
 supply’s negative to a Pi GND pin so they share a ground. Never feed the
 LEDs or servos from the Pi’s 5 V pins: 128 LEDs at full white pull almost
-8 A, and a servo’s start-up spike will reboot the Pi.</li>
-<li><strong>Wire to the breakout, not the Pi.</strong> The 40-pin ribbon (the flat cable
+8 A, and a servo’s start-up spike will reboot the Pi.
+<img src="/bot/_astro/bench-gpio-chain.C5CCJj9d_K3Nhc.svg" alt="How the bench wiring chains together: pin strips in the HAT's socket, the ribbon to the GPIO extension board, the extension board in the breadboard, and jumper wires out to the eyes, mouth, pan-tilt, and shutter." loading="lazy" decoding="async" fetchpriority="auto" width="920" height="340"></p>
+</li>
+<li>
+<p><strong>Wire to the breakout, not the Pi.</strong> The 40-pin ribbon (the flat cable
 with a plug on each end) connects the pins on top of the AI HAT to a
 GPIO breakout: a T-shaped “GPIO extension board” pushed into a
 breadboard is the usual one. Press one plug straight down onto the
@@ -127,10 +133,13 @@ the breadboard row next to the matching label, and the pins on the HAT
 are never touched again. Pin names below are BCM GPIO numbers, with the
 physical header pin in parentheses. (In the body stage the head wires
 are re-run through the tower to a screw-terminal breakout so nothing
-shakes loose while driving; that board comes with the body, not now.)</li>
-<li><strong>Test each part before adding the next.</strong> Every step ends with a command
+shakes loose while driving; that board comes with the body, not now.)</p>
+</li>
+<li>
+<p><strong>Test each part before adding the next.</strong> Every step ends with a command
 that proves the part works. If it doesn’t, stop and fix it; stacking a
-second unknown on top of the first is how afternoons disappear.</li>
+second unknown on top of the first is how afternoons disappear.</p>
+</li>
 </ul>
 <ol role="list" class="sl-steps">
 <li>
