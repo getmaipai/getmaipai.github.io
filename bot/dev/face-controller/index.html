@@ -1,0 +1,348 @@
+<!DOCTYPE html><html lang="en" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-bguv2lll"> <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Face controller | MaiPai Bot</title><link rel="canonical" href="https://getmaipai.github.io/bot/dev/face-controller/"/><link rel="sitemap" href="/bot/sitemap-index.xml"/><script>
+            if (!localStorage.getItem('starlight-theme')) {
+              document.documentElement.setAttribute('data-theme', 'dark');
+            }
+          </script><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=JetBrains+Mono:wght@400;500&display=swap"/><link rel="shortcut icon" href="/bot/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v5.18.2"/><meta name="generator" content="Starlight v0.32.6"/><meta property="og:title" content="Face controller"/><meta property="og:type" content="article"/><meta property="og:url" content="https://getmaipai.github.io/bot/dev/face-controller/"/><meta property="og:locale" content="en"/><meta property="og:description" content="Why the eyes and mouth moved to a Raspberry Pi Pico 2, the wiring, the serial protocol, and how to build and flash the firmware."/><meta property="og:site_name" content="MaiPai Bot"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="Why the eyes and mouth moved to a Raspberry Pi Pico 2, the wiring, the serial protocol, and how to build and flash the firmware."/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg> <svg aria-hidden="true" class="dark astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg> <svg aria-hidden="true" class="auto astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg> </template><link rel="stylesheet" href="/bot/_astro/print.BJ0teN4y.css" media="print"><link rel="stylesheet" href="/bot/_astro/index.Dw2QM7B0.css">
+<style>:root{--sl-badge-default-border: var(--sl-color-accent);--sl-badge-default-bg: var(--sl-color-accent-low);--sl-badge-default-text: #fff;--sl-badge-note-border: var(--sl-color-blue);--sl-badge-note-bg: var(--sl-color-blue-low);--sl-badge-note-text: #fff;--sl-badge-danger-border: var(--sl-color-red);--sl-badge-danger-bg: var(--sl-color-red-low);--sl-badge-danger-text: #fff;--sl-badge-success-border: var(--sl-color-green);--sl-badge-success-bg: var(--sl-color-green-low);--sl-badge-success-text: #fff;--sl-badge-caution-border: var(--sl-color-orange);--sl-badge-caution-bg: var(--sl-color-orange-low);--sl-badge-caution-text: #fff;--sl-badge-tip-border: var(--sl-color-purple);--sl-badge-tip-bg: var(--sl-color-purple-low);--sl-badge-tip-text: #fff}[data-theme=light]:root{--sl-badge-default-bg: var(--sl-color-accent-high);--sl-badge-note-bg: var(--sl-color-blue-high);--sl-badge-danger-bg: var(--sl-color-red-high);--sl-badge-success-bg: var(--sl-color-green-high);--sl-badge-caution-bg: var(--sl-color-orange-high);--sl-badge-tip-bg: var(--sl-color-purple-high)}.sl-badge:where(.astro-avdet4wd){display:inline-block;border:1px solid var(--sl-color-border-badge);border-radius:.25rem;font-family:var(--sl-font-system-mono);line-height:normal;color:var(--sl-color-text-badge);background-color:var(--sl-color-bg-badge);overflow-wrap:anywhere}.sidebar-content .sl-badge:where(.astro-avdet4wd){line-height:1;font-size:var(--sl-text-xs);padding:.125rem .375rem}.sidebar-content a[aria-current=page]>.sl-badge:where(.astro-avdet4wd){--sl-color-bg-badge: transparent;--sl-color-border-badge: currentColor;color:inherit}.default:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-default-bg);--sl-color-border-badge: var(--sl-badge-default-border);--sl-color-text-badge: var(--sl-badge-default-text)}.note:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-note-bg);--sl-color-border-badge: var(--sl-badge-note-border);--sl-color-text-badge: var(--sl-badge-note-text)}.danger:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-danger-bg);--sl-color-border-badge: var(--sl-badge-danger-border);--sl-color-text-badge: var(--sl-badge-danger-text)}.success:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-success-bg);--sl-color-border-badge: var(--sl-badge-success-border);--sl-color-text-badge: var(--sl-badge-success-text)}.tip:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-tip-bg);--sl-color-border-badge: var(--sl-badge-tip-border);--sl-color-text-badge: var(--sl-badge-tip-text)}.caution:where(.astro-avdet4wd){--sl-color-bg-badge: var(--sl-badge-caution-bg);--sl-color-border-badge: var(--sl-badge-caution-border);--sl-color-text-badge: var(--sl-badge-caution-text)}.small:where(.astro-avdet4wd){font-size:var(--sl-text-xs);padding:.125rem .25rem}.medium:where(.astro-avdet4wd){font-size:var(--sl-text-sm);padding:.175rem .35rem}.large:where(.astro-avdet4wd){font-size:var(--sl-text-base);padding:.225rem .45rem}.sl-markdown-content :is(h1,h2,h3,h4,h5,h6) .sl-badge:where(.astro-avdet4wd){vertical-align:middle}
+.card-grid:where(.astro-zntqmydn){display:grid;grid-template-columns:100%;gap:1rem}.card-grid:where(.astro-zntqmydn)>*{margin-top:0!important}@media(min-width:50rem){.card-grid:where(.astro-zntqmydn){grid-template-columns:1fr 1fr;gap:1.5rem}.stagger:where(.astro-zntqmydn){--stagger-height: 5rem;padding-bottom:var(--stagger-height)}.stagger:where(.astro-zntqmydn)>*:nth-child(2n){transform:translateY(var(--stagger-height))}}
+svg:where(.astro-c6vsoqas){color:var(--sl-icon-color);font-size:var(--sl-icon-size, 1em);width:1em;height:1em}
+.sl-link-card:where(.astro-mf7fz2mj){display:grid;grid-template-columns:1fr auto;gap:.5rem;border:1px solid var(--sl-color-gray-5);border-radius:.5rem;padding:1rem;box-shadow:var(--sl-shadow-sm);position:relative}a:where(.astro-mf7fz2mj){text-decoration:none;line-height:var(--sl-line-height-headings)}a:where(.astro-mf7fz2mj):before{content:"";position:absolute;inset:0}.stack:where(.astro-mf7fz2mj){flex-direction:column;gap:.5rem}.title:where(.astro-mf7fz2mj){color:var(--sl-color-white);font-weight:600;font-size:var(--sl-text-lg)}.description:where(.astro-mf7fz2mj){color:var(--sl-color-gray-3);line-height:1.5}.icon:where(.astro-mf7fz2mj){color:var(--sl-color-gray-3)}.sl-link-card:where(.astro-mf7fz2mj):hover{background:var(--sl-color-gray-7, var(--sl-color-gray-6));border-color:var(--sl-color-gray-2)}.sl-link-card:where(.astro-mf7fz2mj):hover .icon:where(.astro-mf7fz2mj){color:var(--sl-color-white)}
+.sl-steps{--bullet-size: calc(var(--sl-line-height) * 1rem);--bullet-margin: .375rem;list-style:none;counter-reset:steps-counter var(--sl-steps-start, 0);padding-inline-start:0}.sl-steps>li{counter-increment:steps-counter;position:relative;padding-inline-start:calc(var(--bullet-size) + 1rem);padding-bottom:1px;min-height:calc(var(--bullet-size) + var(--bullet-margin))}.sl-steps>li+li{margin-top:0}.sl-steps>li:before{content:counter(steps-counter);position:absolute;top:0;inset-inline-start:0;width:var(--bullet-size);height:var(--bullet-size);line-height:var(--bullet-size);font-size:var(--sl-text-xs);font-weight:600;text-align:center;color:var(--sl-color-white);background-color:var(--sl-color-gray-6);border-radius:99rem;box-shadow:inset 0 0 0 1px var(--sl-color-gray-5)}.sl-steps>li:after{--guide-width: 1px;content:"";position:absolute;top:calc(var(--bullet-size) + var(--bullet-margin));bottom:var(--bullet-margin);inset-inline-start:calc((var(--bullet-size) - var(--guide-width)) / 2);width:var(--guide-width);background-color:var(--sl-color-hairline-light)}.sl-steps>li>:first-child{--lh: calc(1em * var(--sl-line-height));--shift-y: calc(.5 * (var(--bullet-size) - var(--lh)));transform:translateY(var(--shift-y));margin-bottom:var(--shift-y)}.sl-steps>li>:first-child:where(h1,h2,h3,h4,h5,h6){--lh: calc(1em * var(--sl-line-height-headings))}@supports (--prop: 1lh){.sl-steps>li>:first-child{--lh: 1lh}}
+.sl-link-button:where(.astro-xwgiixxa){align-items:center;border:1px solid transparent;border-radius:999rem;display:inline-flex;font-size:var(--sl-text-sm);gap:.5em;line-height:1.1875;outline-offset:.25rem;padding:.4375rem 1.125rem;text-decoration:none}.sl-link-button:where(.astro-xwgiixxa).primary{background:var(--sl-color-text-accent);border-color:var(--sl-color-text-accent);color:var(--sl-color-black)}.sl-link-button:where(.astro-xwgiixxa).primary:hover{color:var(--sl-color-black)}.sl-link-button:where(.astro-xwgiixxa).secondary{border-color:inherit;color:var(--sl-color-white)}.sl-link-button:where(.astro-xwgiixxa).minimal{color:var(--sl-color-white);padding-inline:0}.sl-link-button:where(.astro-xwgiixxa) svg{flex-shrink:0}@media(min-width:50rem){.sl-link-button:where(.astro-xwgiixxa){font-size:var(--sl-text-base);padding:.9375rem 1.25rem}}.sl-markdown-content .sl-link-button:where(.astro-xwgiixxa){margin-inline-end:1rem}.sl-markdown-content .sl-link-button:where(.astro-xwgiixxa):not(:where(p *)){margin-block:1rem}
+</style><script type="module" src="/bot/_astro/page.B1D-nYk3.js"></script></head> <body class="astro-bguv2lll"> <a href="#_top" class="astro-7q3lir66">Skip to content</a>  <div class="page sl-flex astro-vrdttmbt"> <header class="header astro-vrdttmbt"><div class="header sl-flex astro-kmkmnagf"> <div class="title-wrapper sl-flex astro-kmkmnagf"> <a href="/bot/" class="site-title sl-flex astro-m46x6ez3">  <img class="light:sl-hidden print:hidden astro-m46x6ez3" alt="MaiPai Bot" src="/bot/_astro/maipai-bot-logo-dark.DQSdet1Q.png" width="2172" height="724"> <img class="dark:sl-hidden print:block astro-m46x6ez3" alt="MaiPai Bot" src="/bot/_astro/maipai-bot-logo-light.BBwIssHZ.png" width="2070" height="760"> <span class="sr-only astro-m46x6ez3" translate="no"> MaiPai Bot </span> </a>  </div> <div class="sl-flex print:hidden astro-kmkmnagf"> <site-search class="astro-kmkmnagf astro-v37mnknz" data-translations="{&#34;placeholder&#34;:&#34;Search&#34;}"> <button data-open-modal disabled aria-label="Search" aria-keyshortcuts="Control+K" class="astro-v37mnknz"> <svg aria-hidden="true" class="astro-v37mnknz astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg>  <span class="sl-hidden md:sl-block astro-v37mnknz" aria-hidden="true">Search</span> <kbd class="sl-hidden md:sl-flex astro-v37mnknz" style="display: none;"> <kbd class="astro-v37mnknz">Ctrl</kbd><kbd class="astro-v37mnknz">K</kbd> </kbd> </button> <dialog style="padding:0" aria-label="Search" class="astro-v37mnknz"> <div class="dialog-frame sl-flex astro-v37mnknz">  <button data-close-modal class="sl-flex md:sl-hidden astro-v37mnknz"> Cancel </button> <div class="search-container astro-v37mnknz"> <div id="starlight__search" class="astro-v37mnknz"></div> </div> </div> </dialog> </site-search>  <script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script> <script type="module" src="/bot/_astro/Search.astro_astro_type_script_index_0_lang.C45uIUYB.js"></script>   </div> <div class="sl-hidden md:sl-flex print:hidden right-group astro-kmkmnagf"> <div class="sl-flex social-icons astro-kmkmnagf"> <a href="https://github.com/getmaipai/bot" rel="me" class="sl-flex astro-wy4te6ga"><span class="sr-only astro-wy4te6ga">GitHub</span><svg aria-hidden="true" class="astro-wy4te6ga astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg> </a> </div> <starlight-theme-select>  <label style="--sl-select-width: 6.25em" class="astro-4yphtoen"> <span class="sr-only astro-4yphtoen">Select theme</span> <svg aria-hidden="true" class="icon label-icon astro-4yphtoen astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg>  <select value="auto" autocomplete="off" class="astro-4yphtoen"> <option value="dark" class="astro-4yphtoen">Dark</option><option value="light" class="astro-4yphtoen">Light</option><option value="auto" selected class="astro-4yphtoen">Auto</option> </select> <svg aria-hidden="true" class="icon caret astro-4yphtoen astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg>  </label>  </starlight-theme-select>  <script>
+	StarlightThemeProvider.updatePickers();
+</script> <script type="module">const r="starlight-theme",o=e=>e==="auto"||e==="dark"||e==="light"?e:"auto",c=()=>o(typeof localStorage<"u"&&localStorage.getItem(r));function n(e){typeof localStorage<"u"&&localStorage.setItem(r,e==="light"||e==="dark"?e:"")}const l=()=>matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";function t(e){StarlightThemeProvider.updatePickers(e),document.documentElement.dataset.theme=e==="auto"?l():e,n(e)}matchMedia("(prefers-color-scheme: light)").addEventListener("change",()=>{c()==="auto"&&t("auto")});class s extends HTMLElement{constructor(){super(),t(c()),this.querySelector("select")?.addEventListener("change",a=>{a.currentTarget instanceof HTMLSelectElement&&t(o(a.currentTarget.value))})}}customElements.define("starlight-theme-select",s);</script> <script type="module">class s extends HTMLElement{constructor(){super();const e=this.querySelector("select");e&&(e.addEventListener("change",t=>{t.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=t.currentTarget.value)}),window.addEventListener("pageshow",t=>{if(!t.persisted)return;const n=e.querySelector("option[selected]")?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}}customElements.define("starlight-lang-select",s);</script> </div> </div> </header> <nav class="sidebar print:hidden astro-vrdttmbt" aria-label="Main"> <starlight-menu-button class="print:hidden astro-jif73yzw"> <button aria-expanded="false" aria-label="Menu" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-jif73yzw"> <svg aria-hidden="true" class="astro-jif73yzw astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg>  </button> </starlight-menu-button> <script type="module">class s extends HTMLElement{constructor(){super(),this.btn=this.querySelector("button"),this.btn.addEventListener("click",()=>this.toggleExpanded());const t=this.closest("nav");t&&t.addEventListener("keyup",e=>this.closeOnEscape(e))}setExpanded(t){this.setAttribute("aria-expanded",String(t)),document.body.toggleAttribute("data-mobile-menu-expanded",t)}toggleExpanded(){this.setExpanded(this.getAttribute("aria-expanded")!=="true")}closeOnEscape(t){t.code==="Escape"&&(this.setExpanded(!1),this.btn.focus())}}customElements.define("starlight-menu-button",s);</script>   <div id="starlight__sidebar" class="sidebar-pane astro-vrdttmbt"> <div class="sidebar-content sl-flex astro-vrdttmbt"> <sl-sidebar-state-persist data-hash="0n5aujs" class="astro-kku4brbg"> <script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script>  <ul class="top-level astro-3ii7xxms"> <li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <sl-sidebar-restore data-index="0"></sl-sidebar-restore> <summary class="astro-3ii7xxms"> <div class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Start here</span>  </div> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>  </summary> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/bot/user/welcome/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Welcome</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/bot/user/build/what-you-need/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">What you need</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/bot/user/build/parts/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Parts list</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <sl-sidebar-restore data-index="1"></sl-sidebar-restore> <summary class="astro-3ii7xxms"> <div class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Build it</span>  </div> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>  </summary> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/bot/user/build/prepare-the-pi/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Prepare the Pi</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/bot/user/build/head/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Build the head, on the bench</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/bot/user/build/next-stages/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">What&#39;s next</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <sl-sidebar-restore data-index="2"></sl-sidebar-restore> <summary class="astro-3ii7xxms"> <div class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Privacy &amp; safety</span>  </div> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>  </summary> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/bot/user/privacy/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Privacy</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/bot/user/safety/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Safety</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <sl-sidebar-restore data-index="3"></sl-sidebar-restore> <summary class="astro-3ii7xxms"> <div class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">Fix a problem</span>  </div> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>  </summary> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/bot/user/fix-a-problem/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Fix a problem</span>  </a> </li> </ul>  </details> </li><li class="astro-3ii7xxms"> <details open class="astro-3ii7xxms"> <sl-sidebar-restore data-index="4"></sl-sidebar-restore> <summary class="astro-3ii7xxms"> <div class="group-label astro-3ii7xxms"> <span class="large astro-3ii7xxms">For tinkerers &amp; developers</span>  </div> <svg aria-hidden="true" class="caret astro-3ii7xxms astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg>  </summary> <ul class="astro-3ii7xxms"> <li class="astro-3ii7xxms"> <a href="/bot/dev/architecture/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Architecture</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/bot/dev/hardware/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Hardware record</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/bot/dev/design-decisions/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Design decisions</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/bot/dev/contributing/" aria-current="false" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Contributing</span>  </a> </li><li class="astro-3ii7xxms"> <a href="/bot/dev/face-controller/" aria-current="page" class="astro-3ii7xxms"> <span class="astro-3ii7xxms">Face controller</span>  </a> </li> </ul>  </details> </li> </ul>   <script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script> </sl-sidebar-state-persist>  <div class="md:sl-hidden"> <div class="mobile-preferences sl-flex astro-wu23bvmt"> <div class="sl-flex social-icons astro-wu23bvmt"> <a href="https://github.com/getmaipai/bot" rel="me" class="sl-flex astro-wy4te6ga"><span class="sr-only astro-wy4te6ga">GitHub</span><svg aria-hidden="true" class="astro-wy4te6ga astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.08 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3Z"/></svg> </a> </div> <starlight-theme-select>  <label style="--sl-select-width: 6.25em" class="astro-4yphtoen"> <span class="sr-only astro-4yphtoen">Select theme</span> <svg aria-hidden="true" class="icon label-icon astro-4yphtoen astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg>  <select value="auto" autocomplete="off" class="astro-4yphtoen"> <option value="dark" class="astro-4yphtoen">Dark</option><option value="light" class="astro-4yphtoen">Light</option><option value="auto" selected class="astro-4yphtoen">Auto</option> </select> <svg aria-hidden="true" class="icon caret astro-4yphtoen astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg>  </label>  </starlight-theme-select>  <script>
+	StarlightThemeProvider.updatePickers();
+</script>   </div>  </div> </div> </div> </nav> <div class="main-frame astro-vrdttmbt">  <script type="module">const a=document.getElementById("starlight__sidebar"),n=a?.querySelector("sl-sidebar-state-persist"),o="sl-sidebar-state",i=()=>{let t=[];const e=n?.dataset.hash||"";try{const s=sessionStorage.getItem(o),r=JSON.parse(s||"{}");Array.isArray(r.open)&&r.hash===e&&(t=r.open)}catch{}return{hash:e,open:t,scroll:a?.scrollTop||0}},c=t=>{try{sessionStorage.setItem(o,JSON.stringify(t))}catch{}},d=()=>c(i()),l=(t,e)=>{const s=i();s.open[e]=t,c(s)};n?.addEventListener("click",t=>{if(!(t.target instanceof Element))return;const e=t.target.closest("summary")?.closest("details");if(!e)return;const s=e.querySelector("sl-sidebar-restore"),r=parseInt(s?.dataset.index||"");isNaN(r)||l(!e.open,r)});addEventListener("visibilitychange",()=>{document.visibilityState==="hidden"&&d()});addEventListener("pageHide",d);</script> <div class="lg:sl-flex astro-67yu43on"> <aside class="right-sidebar-container print:hidden astro-67yu43on"> <div class="right-sidebar astro-67yu43on"> <script type="module" src="/bot/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.C181hMzK.js"></script><script type="module" src="/bot/_astro/TableOfContents.astro_astro_type_script_index_0_lang.CKWWgpjV.js"></script><div class="lg:sl-hidden astro-pb3aqygn"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-doynk5tl"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-doynk5tl"><details id="starlight__mobile-toc" class="astro-doynk5tl"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-doynk5tl"><div class="toggle sl-flex astro-doynk5tl">On this page<svg aria-hidden="true" class="caret astro-doynk5tl astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg> </div><span class="display-current astro-doynk5tl"></span></summary><div class="dropdown astro-doynk5tl"><ul class="isMobile astro-g2bywc46" style="--depth: 0;"> <li class="astro-g2bywc46" style="--depth: 0;"> <a href="#_top" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Overview</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#why-it-exists" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Why it exists</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#wiring" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Wiring</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#clocks" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Clocks</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#how-the-face-is-drawn" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">How the face is drawn</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#the-mouth" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">The mouth</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#the-protocol" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">The protocol</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#build-and-flash" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Build and flash</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#driving-it-from-the-pi" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Driving it from the Pi</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#what-has-not-been-proved-yet" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">What has not been proved yet</span> </a>  </li> </ul> </div></details></nav></mobile-starlight-toc></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-pb3aqygn"><div class="sl-container astro-pb3aqygn"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">On this page</h2><ul class="astro-g2bywc46" style="--depth: 0;"> <li class="astro-g2bywc46" style="--depth: 0;"> <a href="#_top" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Overview</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#why-it-exists" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Why it exists</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#wiring" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Wiring</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#clocks" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Clocks</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#how-the-face-is-drawn" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">How the face is drawn</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#the-mouth" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">The mouth</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#the-protocol" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">The protocol</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#build-and-flash" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Build and flash</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#driving-it-from-the-pi" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">Driving it from the Pi</span> </a>  </li><li class="astro-g2bywc46" style="--depth: 0;"> <a href="#what-has-not-been-proved-yet" class="astro-g2bywc46" style="--depth: 0;"> <span class="astro-g2bywc46" style="--depth: 0;">What has not been proved yet</span> </a>  </li> </ul> </nav></starlight-toc></div></div> </div> </aside> <div class="main-pane astro-67yu43on">  <main data-pagefind-body class="astro-bguv2lll" lang="en" dir="ltr">    <div class="content-panel astro-7nkwcw3z"> <div class="sl-container astro-7nkwcw3z"> <h1 id="_top" class="astro-j6tvhyss">Face controller</h1>  </div> </div>  <div class="content-panel astro-7nkwcw3z"> <div class="sl-container astro-7nkwcw3z"> <div class="sl-markdown-content"> <p>The face controller is a Raspberry Pi Pico 2 (RP2350) that owns both eye
+panels and the WS2812B mouth. It renders the face locally at 60 fps and takes
+high-level commands from the Pi over USB serial: a pose name, a gaze offset, a
+blink, a speech level. The firmware is in <code dir="auto">firmware/face/</code>, the host client is
+<code dir="auto">robot/hal/drivers/face_pico.py</code>, and <code dir="auto">python -m robot.bench.face</code> drives it.</p>
+<p>It is flashed once at build time, speaks only over the local USB cable, has no
+wireless of any kind, and fetches nothing. Same shape as the HEART knob.</p>
+<h2 id="why-it-exists">Why it exists</h2>
+<p>Both 240x320 ST7789 panels on the Pi 5 share SPI0, one chip select each. That
+means the two eyes take turns on one bus, and the wiring will not carry a fast
+clock. Measured on the head bench on 2026-08-31:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>What</th><th>Result</th></tr></thead><tbody><tr><td>Whole frames at 24 MHz</td><td>render 7.6 ms, push 126.1 ms for the pair, <strong>7.5 fps</strong></td></tr><tr><td>Changed-box pushes at 24 MHz</td><td>render 2.2 ms, push 47.4 ms, <strong>20.2 fps</strong></td></tr><tr><td>8, 16 and 24 MHz through breadboard jumpers</td><td>all draw correctly</td></tr><tr><td>40 MHz through breadboard jumpers</td><td>draws nothing at all</td></tr><tr><td>SPI chunk size, 4 kB through 150 kB</td><td>no difference: the link is saturated</td></tr></tbody></table>
+<p>Bounding the lit part of each frame and pushing only that box (unioned with
+the previous box, so a shrinking eye erases behind itself) got 7.5 fps to
+20.2 fps, a 2.7x gain for 37% of the bytes. That was the last easy win. A
+blink is still visibly choppy at 20 fps, and everything else on the Pi
+competes for the same bus and the same core.</p>
+<p>The Pico 2 changes three things at once:</p>
+<ul>
+<li><strong>Two hardware SPI blocks.</strong> One panel each, so the two transfers overlap
+instead of queueing. The Pi has one bus for both.</li>
+<li><strong>Short traces.</strong> The panels sit next to the microcontroller, so the clock
+can run at 62.5 MHz, which is the ST7789’s own write-cycle ceiling (16 ns),
+rather than the 16 MHz the Pi’s jumper harness tolerates.</li>
+<li><strong>PIO.</strong> WS2812B timing on the RP2350’s PIO is a solved problem. On the Pi 5
+the same job goes through the RP1’s PIO, which has never been confirmed
+working for these panels.</li>
+</ul>
+<p>At 62.5 MHz on two blocks in parallel, a whole 153.6 kB frame per eye is about
+20 ms of wire time and a changed box is closer to 7 ms. 60 fps has room, and
+the Pi stops spending a core and a bus on pixels. The firmware measures its
+own frame rate and reports it: <code dir="auto">python -m robot.bench.face bench</code> prints it,
+and it has not been measured on real hardware yet.</p>
+<h2 id="wiring">Wiring</h2>
+<p>Panel VCC goes to the Pico’s 3V3(OUT) (header pin 36) and BLK to 3V3 as well:
+“eye off” is black pixels, not a backlight pin, the same as on the Pi-driven
+panels. Header pins 18 and 23 are grounds inside the two signal groups, so
+each panel gets a ground return next to its own wires.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Signal</th><th>Right eye (SPI1)</th><th>Left eye (SPI0)</th></tr></thead><tbody><tr><td>SCK</td><td>GP10, pin 14</td><td>GP18, pin 24</td></tr><tr><td>MOSI (panel SDA/DIN)</td><td>GP11, pin 15</td><td>GP19, pin 25</td></tr><tr><td>DC</td><td>GP12, pin 16</td><td>GP16, pin 21</td></tr><tr><td>CS</td><td>GP13, pin 17</td><td>GP17, pin 22</td></tr><tr><td>RST</td><td>GP14, pin 19</td><td>GP20, pin 26</td></tr></tbody></table>
+<p>The mouth’s data line is GP15 (pin 20) into a 74AHCT125 level shifter powered
+from 5 V; the shifter’s output goes to the matrix DIN. The matrix takes its
+5 V from the peripheral buck, never from the Pico: 128 pixels at full white
+draw about 7.7 A.</p>
+<p>The Pico itself connects to the Pi by USB, on the 4-port hub with the other
+serial peripherals. It draws its own logic power from that cable.</p>
+<p>Every pin is in one block at the top of <code dir="auto">firmware/face/src/config.h</code>. When the
+face controller is fitted, the Pi’s eye pins (GPIO 6, 7, 8, 10, 11, 25) and
+mouth pin (GPIO 19) go free; the hardware record keeps both allocations,
+because the Pi-driven path still works and is what the current bench uses.</p>
+<h2 id="clocks">Clocks</h2>
+<p><code dir="auto">EYE_SPI_HZ</code> defaults to 62,500,000. <code dir="auto">SYS_CLOCK_KHZ</code> is 125,000, not the
+RP2350’s stock 150,000, because the SPI divider only produces clk_peri divided
+by an even prescale: 125 MHz gives exactly 62.5 MHz, while 150 MHz gives
+75 MHz (over the panel’s spec) or 37.5 MHz and nothing between.</p>
+<p>If a panel draws garbage or nothing, halve <code dir="auto">EYE_SPI_HZ</code> to 31250000, then
+15625000. The <code dir="auto">status</code> command reports the baud rate the SPI block actually
+settled on, so what is running is never a guess.</p>
+<h2 id="how-the-face-is-drawn">How the face is drawn</h2>
+<p>The renderer is a port of <code dir="auto">robot/hal/drivers/eye_renderer.py</code>, not a lookalike:
+same rounded-pill signed distance field, same amber (255, 150, 30), same halo
+falloff and the same reach cutoff where the glow packs to black in RGB565,
+same squint and curve cuts, same tilted lids with the inner corner mirrored per
+eye, same <code dir="auto">asym</code> on the right eye, same blink phase, gaze and jitter, same
+RGB565 packing. The pose table in <code dir="auto">firmware/face/src/poses.c</code> carries all
+seventeen poses field for field from <code dir="auto">robot/face/poses.py</code>.</p>
+<p>Rendering both renderers over 102 cases (every pose, both eyes, three blink and
+gaze combinations) gave identical boxes in every case and identical pixels in
+100 of them; two cases differed by one step in one 5-bit channel on 2 pixels
+out of 36,337, which is float rounding at a truncation boundary.</p>
+<p>Only the box the eye can light is rendered and pushed, unioned with the box the
+previous frame lit, exactly as the Python driver does. Nothing holds a whole
+framebuffer: each eye renders 16 rows at a time into one of two small buffers
+while the other is on the wire, so the four buffers together are 31 kB out of
+the RP2350’s 520 kB.</p>
+<p>Core 0 renders the left eye, reads the serial link and drives the mouth. Core 1
+renders the right eye. Each core owns its own SPI block and DMA channel.
+<code dir="auto">FACE_USE_CORE1</code> set to 0 puts both eyes on core 0, which is slower but takes
+the second core out of the picture while bringing a board up.</p>
+<p>The firmware also owns the idle behaviour: blinks on exponentially distributed
+intervals scaled by the pose’s <code dir="auto">blink_scale</code> and by arousal, and ballistic
+micro-saccades. The host sets a pose once and the face stays alive without
+another byte crossing the wire.</p>
+<h2 id="the-mouth">The mouth</h2>
+<p>Two chained 8x8 WS2812B panels, 16 wide by 8 tall, driven from PIO at 800 kHz
+by DMA so the 3.8 ms transfer never stalls the eye loop. The pattern is the
+same centre-out speech shape as <code dir="auto">robot/hal/drivers/mouth_renderer.py</code>: width
+and height grow with the level, columns nearer the centre are brighter, and
+valence bends the outer columns up or down.</p>
+<p>The brightness cap is enforced in the firmware, not trusted from the host. It
+defaults to 25 percent and anything above 40 percent is refused with an <code dir="auto">err</code>
+line rather than clamped silently, because 128 pixels at full white draw about
+7.7 A. The host client refuses it too, so a mistake gets a Python error before
+it gets a serial one.</p>
+<p>The <code dir="auto">(x, y)</code> to strip index map is the same <code dir="auto">MatrixLayout</code> the Python driver
+uses (panel order, serpentine rows, per-panel 180 degree rotation, row or
+column major) and is set at run time with the <code dir="auto">layout</code> command, because the
+physical pixel order of the panels is not known until they are on the bench.</p>
+<h2 id="the-protocol">The protocol</h2>
+<p>One command per line terminated by <code dir="auto">\n</code>, one reply per command starting with
+<code dir="auto">ok </code> or <code dir="auto">err </code>. Plain text on purpose: the commands the Pi sends are the ones
+a person types into a terminal. It is defined in
+<code dir="auto">firmware/face/src/protocol.h</code>, mirrored by the encoders in
+<code dir="auto">robot/hal/drivers/face_pico.py</code>, and <code dir="auto">PROTO_VERSION</code> is bumped on both sides
+together.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Command</th><th>Reply</th></tr></thead><tbody><tr><td><code dir="auto">help</code></td><td>the command list</td></tr><tr><td><code dir="auto">version</code></td><td><code dir="auto">ok version maipai-face 0.1.0 rp2350 proto 1</code></td></tr><tr><td><code dir="auto">status</code></td><td>fps, frames, pose, gaze, brightness, SPI clock, last frame time and bytes</td></tr><tr><td><code dir="auto">poses</code></td><td>the seventeen pose names</td></tr><tr><td><code dir="auto">ping</code></td><td><code dir="auto">ok pong</code></td></tr><tr><td><code dir="auto">pose &#x3C;name></code></td><td><code dir="auto">ok pose happy</code></td></tr><tr><td><code dir="auto">gaze &#x3C;dx> &#x3C;dy></code></td><td>each -1..1, <code dir="auto">0 0</code> straight ahead</td></tr><tr><td><code dir="auto">blink [double]</code></td><td><code dir="auto">ok blink single</code></td></tr><tr><td><code dir="auto">speak &#x3C;level> [valence]</code></td><td>level 0..1, valence -1..1</td></tr><tr><td><code dir="auto">bright eyes &#x3C;0..1></code></td><td>eye glow multiplier</td></tr><tr><td><code dir="auto">bright mouth &#x3C;0..0.40></code></td><td>above the ceiling is refused</td></tr><tr><td><code dir="auto">idle &#x3C;on|off></code></td><td>auto blinks and micro-saccades</td></tr><tr><td><code dir="auto">layout &#x3C;order> &#x3C;serp> &#x3C;rot1> &#x3C;rot2> &#x3C;rowmajor></code></td><td>mouth pixel mapping</td></tr><tr><td><code dir="auto">blank</code> / <code dir="auto">wake</code></td><td>eyes and mouth black, and back</td></tr></tbody></table>
+<p>Failures name what was wrong: <code dir="auto">err unknown-command &#x3C;word></code>,
+<code dir="auto">err unknown-pose &#x3C;name></code>, <code dir="auto">err usage &#x3C;cmd> &#x3C;what it wants></code>,
+<code dir="auto">err range &#x3C;field> &#x3C;what is allowed></code>, <code dir="auto">err too-long</code>. An unknown command is
+never answered with silence.</p>
+<h2 id="build-and-flash">Build and flash</h2>
+<p>Needs CMake 3.13 or newer, <code dir="auto">arm-none-eabi-gcc</code>, and Python 3. The Pico SDK is
+downloaded, never vendored: set <code dir="auto">PICO_SDK_PATH</code> if you have a checkout,
+otherwise CMake clones the pinned tag into the build directory the first time.</p>
+<div class="expressive-code"><link rel="stylesheet" href="/bot/_astro/ec.j85n7.css"><script type="module" src="/bot/_astro/ec.8zarh.js"></script><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#56B6C2">cd</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">firmware/face</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">cmake</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-B</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">build</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-S</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">.</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">cmake</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">--build</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">build</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-j</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="cd firmware/facecmake -B build -S .cmake --build build -j"><div></div></button></div></figure></div>
+<p>Then unplug the Pico, hold BOOTSEL, plug it back in, release BOOTSEL, and drag
+<code dir="auto">build/maipai_face.uf2</code> onto the <code dir="auto">RP2350</code> drive that appears. The board reboots
+running the firmware and enumerates as a USB serial device named “MaiPai face
+controller”.</p>
+<h2 id="driving-it-from-the-pi">Driving it from the Pi</h2>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">run</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">python</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-m</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">robot.bench.head</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">check</span><span style="--0:#ABB2BF">     </span><span style="--0:#9FA3AA;--0fs:italic"># face-controller shows up here</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">run</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">python</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-m</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">robot.bench.face</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">check</span><span style="--0:#ABB2BF">     </span><span style="--0:#9FA3AA;--0fs:italic"># asks the board its version and fps</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">run</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">python</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-m</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">robot.bench.face</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">pose</span><span style="--0:#ABB2BF">      </span><span style="--0:#9FA3AA;--0fs:italic"># cycle all seventeen poses</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">run</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">python</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-m</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">robot.bench.face</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">blink</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">--double</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">run</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">python</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-m</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">robot.bench.face</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">mouth</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">--pattern</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">sweep</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">run</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">python</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-m</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">robot.bench.face</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">bench</span><span style="--0:#ABB2BF">     </span><span style="--0:#9FA3AA;--0fs:italic"># the frame rate the firmware reports</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">run</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">python</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-m</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">robot.bench.face</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">send</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">pose</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">happy</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="uv run python -m robot.bench.head check     # face-controller shows up hereuv run python -m robot.bench.face check     # asks the board its version and fpsuv run python -m robot.bench.face pose      # cycle all seventeen posesuv run python -m robot.bench.face blink --doubleuv run python -m robot.bench.face mouth --pattern sweepuv run python -m robot.bench.face bench     # the frame rate the firmware reportsuv run python -m robot.bench.face send pose happy"><div></div></button></div></figure></div>
+<p><code dir="auto">robot.bench.head check</code> lists the face controller as an optional device: it is
+reported either way and never makes the head look broken, because the Pi can
+still drive the panels directly and that is what the current bench does.</p>
+<p>Not wired into the running robot yet. <code dir="auto">robot.face.renderer</code> pushes pixels to an
+<code dir="auto">EyePair</code>, and the face controller takes expressions instead, so
+<code dir="auto">open_head_devices</code> still opens the Pi’s own <code dir="auto">TwoEyes</code>. Swapping the renderer
+over to <code dir="auto">FacePico.show_expression</code> when a board is attached is the next step,
+and it wants a board on the bench to prove it.</p>
+<h2 id="what-has-not-been-proved-yet">What has not been proved yet</h2>
+<p>Everything above the protocol line is measured; everything below it is
+arithmetic waiting for a board. The 60 fps target, the 62.5 MHz clock actually
+holding on real wiring, the two DMA transfers really overlapping, the WS2812B
+timing, and the per-pixel render cost on a 125 MHz Cortex-M33 have not been
+run on hardware. <code dir="auto">python -m robot.bench.face bench</code> prints what the firmware
+measures, and those numbers belong in the hardware record once there is a
+board to take them from.</p> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/dev/contributing/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Contributing</span> </span> </a>  </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>
