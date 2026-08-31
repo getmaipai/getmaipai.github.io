@@ -240,6 +240,13 @@ e-stop and bumper switches (power interruptions, no sense line).</p>
 ToF boards (hence the mux), 0x40 PCA9685, 0x44 INA228 (strapped), 0x5A
 MPR121, 0x70 TCA9548A. Keep the bus at 100 to 400 kHz with short stubs; the
 mux can segment more than the ToFs if it gets flaky.</p>
+<p><strong>Conflict found 2026-08-31, not previously recorded:</strong> the PCA9685 also answers
+on its All Call address, 0x70 by default and enabled out of reset, which is the
+TCA9548A multiplexer’s address. The symptom would be ToF reads corrupted
+whenever a servo is addressed. Fix at both ends: clear the ALLCALL bit in MODE1
+during driver init, and strap the multiplexer’s A0 high to move it to 0x71.
+Verify on the bench by connecting only the PCA9685 and running <code dir="auto">i2cdetect -y 1</code>;
+seeing both 0x40 and 0x70 from one board confirms it.</p>
 <h2 id="usb-allocation-4-ports-2x-usb3-2x-usb2">USB allocation (4 ports: 2x USB3, 2x USB2)</h2>
 
 
