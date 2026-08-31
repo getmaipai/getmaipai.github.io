@@ -197,10 +197,18 @@ the other the right.</p>
 
 
 
-<table><thead><tr><th>Display pin</th><th>Left eye</th><th>Right eye</th></tr></thead><tbody><tr><td>GND</td><td>GND (pin 6)</td><td>GND (pin 9)</td></tr><tr><td>VCC</td><td>3.3 V (pin 1)</td><td>3.3 V (pin 17)</td></tr><tr><td>SCL</td><td>GPIO 11 (pin 23)</td><td>GPIO 11 (pin 23)</td></tr><tr><td>SDA</td><td>GPIO 10 (pin 19)</td><td>GPIO 10 (pin 19)</td></tr><tr><td>RES</td><td>GPIO 25 (pin 22)</td><td>GPIO 25 (pin 22)</td></tr><tr><td>DC</td><td>GPIO 6 (pin 31)</td><td>GPIO 6 (pin 31)</td></tr><tr><td>CS</td><td>GPIO 8 (pin 24)</td><td>GPIO 7 (pin 26)</td></tr><tr><td>BLK</td><td>3.3 V (pin 1)</td><td>3.3 V (pin 17)</td></tr></tbody></table>
+<table><thead><tr><th>Display pin</th><th>Left eye</th><th>Right eye</th></tr></thead><tbody><tr><td>GND</td><td>GND (pin 6)</td><td>GND (pin 9)</td></tr><tr><td>VCC</td><td>3.3 V (pin 1)</td><td>3.3 V (pin 17)</td></tr><tr><td>SCL</td><td>GPIO 11 (pin 23)</td><td>GPIO 11 (pin 23)</td></tr><tr><td>SDA</td><td>GPIO 10 (pin 19)</td><td>GPIO 10 (pin 19)</td></tr><tr><td>RST (sometimes RES)</td><td>GPIO 25 (pin 22)</td><td>GPIO 25 (pin 22)</td></tr><tr><td>DC</td><td>GPIO 6 (pin 31)</td><td>GPIO 6 (pin 31)</td></tr><tr><td>CS</td><td>GPIO 8 (pin 24)</td><td>GPIO 7 (pin 26)</td></tr><tr><td>BL (sometimes BLK)</td><td>3.3 V (pin 1)</td><td>3.3 V (pin 17)</td></tr></tbody></table>
+<p><strong>Match by the label printed on your board, not by position.</strong> Vendors
+order these eight pins differently, and some boards read top to bottom in
+exactly the reverse of this table. The silkscreen is the truth.</p>
 <p>SCL is the SPI clock and SDA is SPI data here, despite the I2C-sounding
 names on the board. BLK is the backlight: tied permanently on, because
 “eye off” is drawn as black pixels behind the smoked visor.</p>
+<p>The 8-pin header usually ships loose in the bag. Solder it with the pins
+out the back, away from the screen. For a first bench test you can wedge
+it in unsoldered, but if the picture flickers or comes and goes, solder
+it before changing any driver setting: a marginal contact looks exactly
+like a wrong init sequence.</p>
 <p>Stand the displays <strong>portrait</strong> (tall), side by side, about 5.5 inches
 apart centre to centre. That is where they sit in the body, with the
 camera between them.</p>
