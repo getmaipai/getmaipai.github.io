@@ -298,11 +298,18 @@ being verified on hardware. See <a href="../../fix-a-problem/#if-the-mouth-never
 <p>Plug the 22-to-15-pin cable into the Pi’s <strong>CAM/DISP 1</strong> connector (the
 one nearer the board edge; CAM/DISP 0 beside it already has the
 touchscreen) and into the Camera Module 3. Lift each connector’s
-latch fully before inserting; the cable seats only one way. Raspberry Pi
-OS detects the camera on its own, nothing to configure.</p>
+latch fully before inserting; the cable seats only one way, metal
+contacts facing the same direction as the screen cable’s in the
+connector beside it.</p>
+<p>The official Camera Module 3 needs no configuration. <strong>The Arducam
+version needs two config lines first</strong>; they’re in
+<a href="../../fix-a-problem/#if-the-camera-isnt-detected">Fix a problem</a>.</p>
 <div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">run</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">python</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-m</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">robot.bench.head</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">camera</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="uv run python -m robot.bench.head camera"><div></div></button></div></figure></div>
-<p><strong>You’ll know it worked when</strong> it prints the path of <code dir="auto">head-camera.jpg</code>
-and the picture is the bench. Copy it over to look at it (<code dir="auto">scp</code> works).</p>
+<p><strong>You’ll know it worked when</strong> it prints <code dir="auto">saved head-camera.jpg</code>. Look
+at the picture from your other computer (this command runs there, not
+on the Pi):</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">scp</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">maipai@maipai-bot.local:bot/robot/head-camera.jpg</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">~/Desktop/</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="scp maipai@maipai-bot.local:bot/robot/head-camera.jpg ~/Desktop/"><div></div></button></div></figure></div>
+<p>The photo should show your bench, in focus, right colors.</p>
 </li>
 <li>
 <h2 id="the-pan-tilt">The pan-tilt</h2>
