@@ -199,6 +199,12 @@ the other the right.</p>
 
 <table><thead><tr><th>Display pin</th><th>Left eye</th><th>Right eye</th></tr></thead><tbody><tr><td>GND</td><td>GND (pin 6)</td><td>GND (pin 9)</td></tr><tr><td>VCC</td><td>3.3 V (pin 1)</td><td>3.3 V (pin 17)</td></tr><tr><td>SCL</td><td>GPIO 11 (pin 23)</td><td>GPIO 11 (pin 23)</td></tr><tr><td>SDA</td><td>GPIO 10 (pin 19)</td><td>GPIO 10 (pin 19)</td></tr><tr><td>RST (sometimes RES)</td><td>GPIO 25 (pin 22)</td><td>GPIO 25 (pin 22)</td></tr><tr><td>DC</td><td>GPIO 6 (pin 31)</td><td>GPIO 6 (pin 31)</td></tr><tr><td>CS</td><td>GPIO 8 (pin 24)</td><td>GPIO 7 (pin 26)</td></tr><tr><td>BL (sometimes BLK)</td><td>3.3 V (pin 1)</td><td>3.3 V (pin 17)</td></tr></tbody></table>
 <p><img src="/bot/_astro/eye-wiring.BRflkzuQ_qb9NI.svg" alt="Eight colour-matched wires from the AI HAT&#x27;s 40-pin header to the display&#x27;s eight pins, with a table of row, column, and Pi pin for each." loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="760"></p>
+<p><strong>First, give the header something to grip.</strong> The AI HAT’s top socket is
+deep, and a Dupont jumper’s male pin is too short to reach the contacts
+inside it. Press the male pin strips into that socket so real pins stand
+above it, or push an extra-tall stacking header’s long legs down into it
+and use the socket that then faces up. Either way you end up with
+something a jumper can actually hold.</p>
 <p><strong>Finding the holes.</strong> The header is two rows of twenty. The row holding
 pin 1 is the odd row, the other is even, and column 1 is the end away
 from the USB and Ethernet ports. Confirm it with a meter rather than
