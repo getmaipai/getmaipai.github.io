@@ -199,24 +199,95 @@ the other the right.</p>
 
 <table><thead><tr><th>Display pin</th><th>Left eye</th><th>Right eye</th></tr></thead><tbody><tr><td>GND</td><td>GND (pin 6)</td><td>GND (pin 9)</td></tr><tr><td>VCC</td><td>3.3 V (pin 1)</td><td>3.3 V (pin 17)</td></tr><tr><td>SCL</td><td>GPIO 11 (pin 23)</td><td>GPIO 11 (pin 23)</td></tr><tr><td>SDA</td><td>GPIO 10 (pin 19)</td><td>GPIO 10 (pin 19)</td></tr><tr><td>RST (sometimes RES)</td><td>GPIO 25 (pin 22)</td><td>GPIO 25 (pin 22)</td></tr><tr><td>DC</td><td>GPIO 6 (pin 31)</td><td>GPIO 6 (pin 31)</td></tr><tr><td>CS</td><td>GPIO 8 (pin 24)</td><td>GPIO 7 (pin 26)</td></tr><tr><td>BL (sometimes BLK)</td><td>3.3 V (pin 1)</td><td>3.3 V (pin 17)</td></tr></tbody></table>
 <p><img src="/bot/_astro/eye-wiring.BRflkzuQ_qb9NI.svg" alt="Eight colour-matched wires from the AI HAT&#x27;s 40-pin header to the display&#x27;s eight pins, with a table of row, column, and Pi pin for each." loading="lazy" decoding="async" fetchpriority="auto" width="1080" height="760"></p>
-<p><strong>First, give the header something to grip.</strong> The AI HAT’s top socket is
-deep, and a Dupont jumper’s male pin is too short to reach the contacts
-inside it. Press the male pin strips into that socket so real pins stand
-above it, or push an extra-tall stacking header’s long legs down into it
-and use the socket that then faces up. Either way you end up with
-something a jumper can actually hold.</p>
-<p><strong>Finding the holes.</strong> The header is two rows of twenty. The row holding
-pin 1 is the odd row, the other is even, and column 1 is the end away
-from the USB and Ethernet ports. Confirm it with a meter rather than
-trusting the count: with the Pi on and the black probe on the metal USB
-shell, the only two holes reading 5 V sit at the pin 1 end in the <strong>even</strong>
-row. That single measurement fixes both the end and the rows.</p>
-<p><strong>Match by the label printed on your board, not by position.</strong> Vendors
-order these eight pins differently, and some boards read top to bottom in
-exactly the reverse of this table. The silkscreen is the truth.</p>
-<p>SCL is the SPI clock and SDA is SPI data here, despite the I2C-sounding
-names on the board. BLK is the backlight: tied permanently on, because
-“eye off” is drawn as black pixels behind the smoked visor.</p>
+<p><strong>Reaching the GPIO past the AI HAT.</strong> The HAT covers the Pi’s 40 pins,
+and its own top socket is not usable: the Pi’s pins already fill the
+wells from below, so nothing can be pressed in from above and a Dupont
+jumper is far too short to reach a contact. The fix is an <strong>extra-tall
+2x20 stacking header</strong>, and it does not replace anything:</p>
+<ul>
+<li>Its socket pushes <strong>down onto the Pi’s existing soldered pins</strong>, which
+stay exactly where they are.</li>
+<li>Its long legs point up, pass all the way through the AI HAT’s socket,
+and stand proud on top. That is where the ribbon connects.</li>
+<li>The HAT now rides a few millimetres higher, so build the standoffs up
+from the M2.5 kit to support all four corners, and check the PCIe
+ribbon still reaches.</li>
+</ul>
+<p>You’ll know it worked when the Hailo still enumerates: <code dir="auto">lspci | grep -i hailo</code> lists it, and <code dir="auto">robot.bench.head check</code> says <code dir="auto">ai-hat: ok</code>.</p>
+<p><strong>Ribbon, breakout, breadboard.</strong> Press the 40-pin ribbon onto those
+exposed pins, plug its other end into the T-shaped GPIO extension board
+(that end is keyed), and push the T board into the breadboard so it
+<strong>straddles the centre groove</strong>, one row of its pins each side, pressed
+fully flat.</p>
+<p><strong>Check the ribbon is not reversed, and measure rather than look.</strong> The
+HAT end is not keyed, so a 180 degree rotation silently swaps every
+signal. With the Pi powered and nothing else connected, put the meter on
+DC volts, black probe on the metal USB shell, red probe in the T board’s
+<code dir="auto">3V3</code> row. <strong>3.3 V means correct; 0 V means flip the connector.</strong> Nothing
+can be harmed at this point because the display is not attached yet, which
+is exactly why the check comes first.</p>
+<p><strong>The breadboard holes.</strong> Rows <code dir="auto">a b c d e</code> are one connected node and
+<code dir="auto">f g h i j</code> are another; the groove separates them. So a wire in row <code dir="auto">a</code>
+reaches the T board pin sitting in row <code dir="auto">c</code> of the same column. The power
+rails along the edges are not used here.</p>
+<p>Note that many breakout boards print <strong>SPI names</strong> rather than GPIO
+numbers for three of these pins:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Display pin</th><th>T board label</th><th>Same as</th></tr></thead><tbody><tr><td>VCC</td><td><code dir="auto">3V3</code></td><td>pin 1</td></tr><tr><td>GND</td><td><code dir="auto">GND</code></td><td>pin 9</td></tr><tr><td>BL</td><td>the second <code dir="auto">3V3</code></td><td>pin 17</td></tr><tr><td>SDA</td><td><code dir="auto">SPIMOSI</code></td><td>GPIO 10</td></tr><tr><td>SCL</td><td><code dir="auto">SPISCLK</code></td><td>GPIO 11</td></tr><tr><td>RST</td><td><code dir="auto">GPIO25</code></td><td>GPIO 25</td></tr><tr><td>DC</td><td><code dir="auto">GPIO6</code></td><td>GPIO 6</td></tr><tr><td>CS</td><td><code dir="auto">SPICE0</code></td><td>GPIO 8</td></tr></tbody></table>
+<p>With the T board’s bottom label row seated in <code dir="auto">c</code> and its top row in <code dir="auto">g</code>,
+both starting at column 1, the left eye’s eight wires land in: <strong>1a</strong>
+(VCC), <strong>5a</strong> (GND), <strong>9a</strong> (BL), <strong>10a</strong> (SDA), <strong>12a</strong> (SCL), <strong>16a</strong>
+(DC), <strong>11j</strong> (RST), <strong>12j</strong> (CS). Meter <code dir="auto">1a</code> for 3.3 V before connecting
+the display, to confirm the column count matches your board.</p>
 <p>The 8-pin header usually ships loose in the bag. Solder it with the pins
 out the back, away from the screen. For a first bench test you can wedge
 it in unsoldered, but if the picture flickers or comes and goes, solder
