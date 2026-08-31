@@ -93,6 +93,7 @@ level shifter. Two cables and two commands.</p>
 <li>A USB charger for the speaker, and its cable</li>
 </ul><p><strong>Software</strong></p><ul>
 <li>The robot software on the Pi from <a href="../prepare-the-pi/">Prepare the Pi</a></li>
+<li><code dir="auto">libportaudio2</code> from apt (this page installs it)</li>
 <li>About 1 GB free for the voice models</li>
 </ul><p>An hour, most of it waiting for downloads.</p> </div> </aside>
 <h2 id="why-the-speaker-plugs-into-the-microphone">Why the speaker plugs into the microphone</h2>
@@ -153,11 +154,19 @@ the Pi’s power budget is already carrying an AI accelerator and a drive.</p>
 </li>
 </ol>
 <h2 id="install-the-voice-software">Install the voice software</h2>
-<p>The audio libraries are an optional extra, so they are not installed by
-default:</p>
-<div class="expressive-code"><link rel="stylesheet" href="/bot/_astro/ec.j85n7.css"><script type="module" src="/bot/_astro/ec.8zarh.js"></script><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#56B6C2">cd</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">~/bot/robot</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">sync</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">--extra</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">hardware</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">--extra</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">voice</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="cd ~/bot/robotuv sync --extra hardware --extra voice"><div></div></button></div></figure></div>
+<p>Two parts: a system audio library, then the Python packages.</p>
+<div class="expressive-code"><link rel="stylesheet" href="/bot/_astro/ec.j85n7.css"><script type="module" src="/bot/_astro/ec.8zarh.js"></script><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">sudo</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">apt</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">install</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-y</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">libportaudio2</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="sudo apt install -y libportaudio2"><div></div></button></div></figure></div>
+<p><code dir="auto">sounddevice</code>, which everything here records and plays through, is a wrapper
+around PortAudio, and Pi OS Lite does not ship the C library it wraps. Without
+it both the microphone and the speaker report missing even with the array
+plugged in and working.</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#56B6C2">cd</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">~/bot/robot</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">sync</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">--extra</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">hardware</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">--extra</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">voice</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="cd ~/bot/robotuv sync --extra hardware --extra voice"><div></div></button></div></figure></div>
 <p>Name both extras. <code dir="auto">--extra voice</code> on its own removes the hardware libraries the
 eyes need.</p>
+<p>That pull is about 160 MB. If your Pi is on Wi-Fi, run it so a dropped
+connection cannot kill it half way:</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">nohup</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">uv</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">sync</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">--extra</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">hardware</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">--extra</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">voice</span><span style="--0:#ABB2BF"> > </span><span style="--0:#98C379">~/voice-sync.log</span><span style="--0:#ABB2BF"> 2>&#x26;1 &#x26;</span></div></div><div class="ec-line"><div class="code"><span style="--0:#61AFEF">tail</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-f</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">~/voice-sync.log</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="nohup uv sync --extra hardware --extra voice > ~/voice-sync.log 2>&#x26;1 &#x26;tail -f ~/voice-sync.log"><div></div></button></div></figure></div>
+<p><code dir="auto">Ctrl-C</code> stops watching the log, not the install.</p>
 <h2 id="install-the-voice-models">Install the voice models</h2>
 <p>Four models do the work, and all of them run locally:</p>
 
