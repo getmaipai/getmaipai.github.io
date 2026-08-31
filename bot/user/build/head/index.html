@@ -328,9 +328,15 @@ stage’s settings.</p>
 <li>
 <h2 id="the-mouth">The mouth</h2>
 <p>The two 8x8 panels chain into one 16-wide by 8-tall matrix. Data goes
-from the Pi through the level shifter, because the LEDs want a 5 V signal
-and the Pi speaks 3.3 V. Feeding them 3.3 V data “sort of works” and then
-flickers for the rest of the robot’s life, so don’t skip the chip.</p>
+through the level shifter, because the LEDs want a 5 V signal and a 3.3 V
+one “sort of works” and then flickers for the rest of the robot’s life.
+Don’t skip the chip.</p>
+<aside aria-label="The mouth is not driven by the Pi" class="starlight-aside starlight-aside--caution"> <p class="starlight-aside__title" aria-hidden="true"> <svg aria-hidden="true" class="starlight-aside__icon astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M12 16a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm10.67 1.47-8.05-14a3 3 0 0 0-5.24 0l-8 14A3 3 0 0 0 3.94 22h16.12a3 3 0 0 0 2.61-4.53Zm-1.73 2a1 1 0 0 1-.88.51H3.94a1 1 0 0 1-.88-.51 1 1 0 0 1 0-1l8-14a1 1 0 0 1 1.78 0l8.05 14a1 1 0 0 1 .05 1.02v-.02ZM12 8a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V9a1 1 0 0 0-1-1Z"></path></svg> The mouth is not driven by the Pi </p> <div class="starlight-aside__content"> <p>A Pi 5 cannot drive WS2812B pixels. The usual library, <code dir="auto">rpi_ws281x</code>, works
+by taking over the BCM283x PWM and DMA blocks, and the Pi 5 has neither:
+its GPIO lives on the separate RP1. It fails with <code dir="auto">ws2811_init failed with code -3</code> on every pin, and no wiring change fixes it.</p><p>The mouth runs from the <strong>face controller</strong> instead, a Pico 2 that also
+drives the eyes. Wire the panels as below and test them at that stage. The
+driver refuses on a Pi 5 rather than crashing, so if you run the command
+here you get one line telling you this.</p> </div> </aside>
 <p><strong>The level shifter.</strong> It is a DIP-14: push it into the breadboard
 straddling the centre groove, <strong>notch pointing left</strong>, which puts pin 1 at
 the bottom left and pin 14 directly above it.</p>
