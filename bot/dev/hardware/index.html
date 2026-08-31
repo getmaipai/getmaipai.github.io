@@ -236,7 +236,7 @@ from header pin 4, GND pin 34), camera (CSI on CAM/DISP 1), mic array, lidar, re
 connector), soft-power button (the Pi 5 J2 header, never GPIO 3), mic-cut,
 e-stop and bumper switches (power interruptions, no sense line).</p>
 <h2 id="i2c-address-map">I2C address map</h2>
-<p>0x15 CST816S (heart knob fallback only), 0x20 MCP23017, 0x2D UPS HAT (E) MCU (S: stated, confirm on the bench), 0x29 all VL53L5CX
+<p>0x15 CST816S (heart knob fallback only), 0x20 MCP23017, 0x2D UPS HAT (E) MCU (M: confirmed on the bench 2026-08-30), 0x29 all VL53L5CX
 ToF boards (hence the mux), 0x40 PCA9685, 0x44 INA228 (strapped), 0x5A
 MPR121, 0x70 TCA9548A. Keep the bus at 100 to 400 kHz with short stubs; the
 mux can segment more than the ToFs if it gets flaky.</p>
