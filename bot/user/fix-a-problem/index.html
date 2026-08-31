@@ -112,11 +112,14 @@ the hardware.</p>
 pin; the level shifter’s pin 1 is tied to GND (with it floating, the chip
 outputs nothing); the data wire goes into the panel’s DIN, not DOUT (the
 pads look alike); the panel’s own 5 V and GND are connected.</p>
-<p>If all that checks out and the layout pattern still shows nothing, the
-software’s LED output on GPIO 19 may not be working on your Pi 5 firmware.
-Run the command with <code dir="auto">sudo</code> once to rule out permissions. If it still does
-nothing, move the data wire to GPIO 20 (pin 38) and pass <code dir="auto">--pin 20</code> to try a
-different output pin.</p>
+<p><strong>If you are trying to drive the mouth from the Pi, stop: it cannot work.</strong>
+<code dir="auto">rpi_ws281x</code> lights these pixels by taking over the BCM283x PWM and DMA
+blocks, and a Pi 5 has neither, its GPIO being on the separate RP1. You get
+<code dir="auto">ws2811_init failed with code -3</code>, on every pin, and no wiring change helps.
+Changing pins was once suggested here; it was wrong, and there is no pin that
+works.</p>
+<p>The mouth is driven by the face controller, which lights these panels with
+PIO. The bench tool now says so in one line instead of crashing.</p>
 <h2 id="if-the-mouth-lights-but-the-pattern-is-scrambled">If the mouth lights but the pattern is scrambled</h2>
 <p>The panel layout guess is wrong, not the wiring. Watch the layout pattern
 and follow the rule on the head page: snaking rows mean <code dir="auto">--serpentine</code>, a
