@@ -331,7 +331,9 @@ stage’s settings.</p>
 from the Pi through the level shifter, because the LEDs want a 5 V signal
 and the Pi speaks 3.3 V. Feeding them 3.3 V data “sort of works” and then
 flickers for the rest of the robot’s life, so don’t skip the chip.</p>
-<p><strong>Level shifter (74AHCT125, DIP-14, notch up, pins count anticlockwise from top left):</strong></p>
+<p><strong>The level shifter.</strong> It is a DIP-14: push it into the breadboard
+straddling the centre groove, <strong>notch pointing left</strong>, which puts pin 1 at
+the bottom left and pin 14 directly above it.</p>
 
 
 
@@ -361,8 +363,24 @@ flickers for the rest of the robot’s life, so don’t skip the chip.</p>
 
 
 
-<table><thead><tr><th>Chip pin</th><th>Connect to</th></tr></thead><tbody><tr><td>14 (VCC)</td><td>5 V from the bench supply</td></tr><tr><td>7 (GND)</td><td>Bench supply negative, which is also Pi GND</td></tr><tr><td>1 (1OE)</td><td>GND (this enables the first buffer)</td></tr><tr><td>2 (1A)</td><td>GPIO 19 (pin 35) on the Pi</td></tr><tr><td>3 (1Y)</td><td>DIN on the <strong>first</strong> panel</td></tr></tbody></table>
-<p><strong>Panels:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Wire</th><th>From</th><th>To</th></tr></thead><tbody><tr><td>red</td><td>bench supply <strong>+</strong></td><td>chip pin 14 (VCC)</td></tr><tr><td>black</td><td>bench supply <strong>−</strong></td><td>chip pin 7 (GND)</td></tr><tr><td>black</td><td>chip pin 7 (GND)</td><td>chip pin 1 (1OE)</td></tr><tr><td>white</td><td>any Pi GND pin</td><td>chip pin 7 (GND)</td></tr><tr><td>green</td><td>Pi GPIO 19 (pin 35)</td><td>chip pin 2 (1A)</td></tr><tr><td>green</td><td>chip pin 3 (1Y)</td><td>panel 1 <code dir="auto">DIN</code></td></tr></tbody></table>
+<p>Pin 1 is the enable and it is <strong>active low</strong>: grounded means the buffer
+passes signal, left floating means the chip outputs nothing at all and the
+mouth stays dark with no other symptom. The white wire is the one that
+catches people out: without a shared ground between the Pi and the LED
+supply, the data line has no reference and the panels ignore it.</p>
+<p><strong>The panels.</strong></p>
 
 
 
@@ -388,7 +406,24 @@ flickers for the rest of the robot’s life, so don’t skip the chip.</p>
 
 
 
-<table><thead><tr><th>Panel pad</th><th>Connect to</th></tr></thead><tbody><tr><td>Panel 1: 5V, GND</td><td>Bench supply</td></tr><tr><td>Panel 1: DIN</td><td>Level shifter pin 3</td></tr><tr><td>Panel 1: DOUT</td><td>Panel 2: DIN</td></tr><tr><td>Panel 2: 5V, GND</td><td>Bench supply</td></tr></tbody></table>
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Wire</th><th>From</th><th>To</th></tr></thead><tbody><tr><td>red</td><td>bench supply <strong>+</strong></td><td>panel 1 <code dir="auto">5V</code></td></tr><tr><td>white</td><td>bench supply <strong>−</strong></td><td>panel 1 <code dir="auto">GND</code></td></tr><tr><td>green</td><td>panel 1 <code dir="auto">DOUT</code></td><td>panel 2 <code dir="auto">DIN</code></td></tr><tr><td>red</td><td>bench supply <strong>+</strong></td><td>panel 2 <code dir="auto">5V</code></td></tr><tr><td>white</td><td>bench supply <strong>−</strong></td><td>panel 2 <code dir="auto">GND</code></td></tr></tbody></table>
+<p>Panel power comes straight from the supply, not through the breadboard:
+128 LEDs pull more current than breadboard rails are happy carrying.</p>
+<p><strong>Read the silkscreen, do not trust the lead colours.</strong> Each panel has its
+pads labelled <code dir="auto">5V</code>, <code dir="auto">GND</code>, <code dir="auto">DIN</code> and <code dir="auto">DOUT</code>, and an arrow showing which way
+data flows. On common panels the flying lead is red, white and green, and
+<strong>green is the data wire while white is ground</strong>, which is not what the
+colours suggest. Swapping those two puts 5 V into the data line.</p>
 <p>Lay the panels side by side with panel 1 on the robot’s right (your left,
 facing it), coplanar, just below the eyes.</p>
 <p>The LED library needs root on the Pi, so the mouth and demo commands run
