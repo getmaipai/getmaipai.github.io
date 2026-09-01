@@ -255,9 +255,13 @@ gives the number if yours differs.</p>
 <p><strong>You’ll know it stuck when</strong> <code dir="auto">amixer -c 0 sget 'PCM',0</code> reads <code dir="auto">[0.00dB]</code>
 after a reboot instead of <code dir="auto">[-20.00dB]</code>.</p>
 <p>Then have a conversation with it:</p>
-<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">./.venv/bin/python</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-m</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">robot.bench.voice</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">chat</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="./.venv/bin/python -m robot.bench.voice chat"><div></div></button></div></figure></div>
-<p>Say the wake phrase, wait for it to answer, and talk to it. The language model
-runs on the Pi, so the first reply is slower than the ones after it.</p>
+<div class="expressive-code"><figure class="frame is-terminal not-content"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="sh"><code><div class="ec-line"><div class="code"><span style="--0:#61AFEF">./.venv/bin/python</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">-m</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">robot.bench.voice</span><span style="--0:#ABB2BF"> </span><span style="--0:#98C379">chat</span><span style="--0:#ABB2BF"> </span><span style="--0:#D19A66">--brain</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="./.venv/bin/python -m robot.bench.voice chat --brain"><div></div></button></div></figure></div>
+<p>Say the wake phrase and talk to it. This is the real robot answering, not a
+bare language model: it knows the actual time, what it can do, and it
+remembers what you tell it for the length of the run. Questions its skills
+cover are answered instantly; open-ended chat goes through the language
+model on the Pi and takes several seconds to start speaking. Each answer
+prints a timing line so you can see which kind you got.</p>
 <p><strong>You’ll know the whole chain works when</strong> you say the wake phrase, the robot
 answers a question out loud, and your Wi-Fi could be unplugged the entire time.</p>
 <h2 id="prove-it-cant-hear-itself">Prove it can’t hear itself</h2>
