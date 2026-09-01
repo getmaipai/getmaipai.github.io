@@ -548,13 +548,20 @@ on the same data directory, and ask for the memory back.</p>
 one process hosting every service, restarted by systemd if it dies, each
 service restarted inside by the supervisor if it ticks wrong). And the
 screen lights when the robot does: the touchscreen renderer - UI-01’s long-
-pending pixel half - draws the composed PanelFrame to the DSI framebuffer in
-MaiPai’s own amber-on-black. The base frame is a quiet presence ring (the
-robot is awake), filled while it speaks, dotted while it listens or thinks;
-battery segments top-right, the never-suppressed recording dot top-left, at
-most one banner strip, and the first-run pairing code large. Redraws happen
-only when the frame changes, and a dead panel is reported once and never
-costs the conversation.</p>
+pending pixel half - draws the composed PanelFrame to the DSI framebuffer.
+The layout is the owner’s, settled on the bench (2026-09-01) after two
+wrong drafts (a presence ring, then a face that duplicated the head’s):
+three always-on icon columns - battery, internet, mode - in universal
+forms only, no words (the design’s own non-negotiable, re-learned the
+hard way). Battery is the classic silhouette with a real fill from the
+UPS HAT (E) driver, or a wall plug on a body with no battery; internet is
+the wifi fan reading the default route (a purely local fact - tailscale’s
+self-view falsely called a connected bench offline); mode carries the
+status vocabulary with a green check for ready. Unknowns draw as grey
+plus the question symbol, never guessed. The recording dot and the one
+banner strip remain; setup shows the shared-title QR page. Redraws happen
+only on change, and a dead panel is reported once and never costs the
+conversation.</p>
 <h2 id="the-robot-speaks-its-own-body">The robot speaks its own body</h2>
 <p>The whatever-answered rule gives every boot a different body, so the
 dialogue has to know which parts exist and answer accordingly. The research
