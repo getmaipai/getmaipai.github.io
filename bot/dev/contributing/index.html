@@ -96,6 +96,14 @@ one device at a time (<code dir="auto">check</code>, <code dir="auto">eyes</code
 controller over USB serial (<code dir="auto">check</code>, <code dir="auto">pose</code>, <code dir="auto">blink</code>, <code dir="auto">mouth</code>, <code dir="auto">bench</code>,
 <code dir="auto">send</code>). Its firmware is in <code dir="auto">firmware/face/</code>; see
 <a href="../face-controller/">Face controller</a>.</li>
+<li><code dir="auto">uv run python -m robot.bench.voice &#x3C;command></code> proves the ears and mouth
+one stage at a time (<code dir="auto">check</code>, <code dir="auto">say</code>, <code dir="auto">listen</code>, <code dir="auto">chat</code>, <code dir="auto">barge</code>, <code dir="auto">enroll</code>,
+<code dir="auto">who</code>, <code dir="auto">endpoint</code>). <code dir="auto">chat --brain</code> answers through the real conversation
+stack and prints a <code dir="auto">[timing]</code> line per turn. The user guide’s voice page
+is the script.</li>
+<li><code dir="auto">uv run python -m robot.bench.chat</code> talks to the real conversation stack
+in text, no audio hardware needed (<code dir="auto">--brain</code> adds the local model,
+<code dir="auto">--keep</code> remembers across runs, <code dir="auto">--why</code> shows which skill answered).</li>
 <li><code dir="auto">uv run python -m robot.teleop.web</code> serves the web console.</li>
 <li>Production is <code dir="auto">python -m robot</code> under the systemd unit in <code dir="auto">deploy/</code>.</li>
 </ul>
