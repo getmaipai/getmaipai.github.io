@@ -247,7 +247,7 @@ mux can segment more than the ToFs if it gets flaky.</p>
 <p><strong>Conflict found 2026-08-31, not previously recorded:</strong> the PCA9685 also answers
 on its All Call address, 0x70 by default and enabled out of reset, which is the
 TCA9548A multiplexer’s address. The symptom would be ToF reads corrupted
-whenever a servo is addressed. Fix at both ends: clear the ALLCALL bit in MODE1
+whenever a servo is addressed. Fix at both ends, and do BOTH: <strong>strap the mux to 0x71</strong> (its A0/A1/A2 pins select 0x70 to 0x77, so the collision can be designed out rather than programmed around, and a hardware fix does not depend on software running correctly), and clear the ALLCALL bit in MODE1
 during driver init, and strap the multiplexer’s A0 high to move it to 0x71.
 Verify on the bench by connecting only the PCA9685 and running <code dir="auto">i2cdetect -y 1</code>;
 seeing both 0x40 and 0x70 from one board confirms it.</p>
