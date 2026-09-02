@@ -254,9 +254,12 @@ connection, not a background poll.</li>
 walled by a video platform for a day because background traffic far exceeded
 what a person could produce, and every family member’s player went dark. The
 robot is the device in the house that most needs to keep working, and it shares
-that address. Media extraction in particular already lives on the hub, where it
-has one limiter and one session; a second client on the robot hitting the same
-service from the same address is strictly worse than one.</p>
+that address. That another device already doing something is never an argument
+against the robot doing it locally (owner’s rule, 2026-09-02: the robot is
+standalone first, so duplicating a capability on-board is the point); the
+argument is about pace. Any media capability the robot grows carries its own
+limiter and daily budget through this layer’s single choke point, exactly like
+the feeds above, so two well-behaved clients never add up to one scraper.</p>
 <p>Search-scrape-summarize gets the same answer for a second reason. A 1 to 3B
 model summarising a scraped page, spoken aloud as fact to a household that
 includes children, is a confabulation engine, and <code dir="auto">prompt.py</code> already promises
