@@ -176,18 +176,21 @@ conversation with you.</strong></p>
 
 
 
-<table><thead><tr><th>State</th><th>Ring</th></tr></thead><tbody><tr><td>Idle, listening for its name</td><td>off</td></tr><tr><td>Listening to you (including multi-turn)</td><td>slow amber pulse, the brighter of the two</td></tr><tr><td>Heard you, thinking</td><td>solid, dimmed, same colour</td></tr><tr><td>Speaking</td><td>amber pulse one speed step quicker than listening</td></tr><tr><td>Recording (adult-initiated)</td><td>solid red</td></tr><tr><td>Muted</td><td>dark, because its 5 V is cut</td></tr></tbody></table>
+<table><thead><tr><th>State</th><th>Ring</th></tr></thead><tbody><tr><td>Idle, listening for its name</td><td>off</td></tr><tr><td>Listening to you (including multi-turn)</td><td>slow amber pulse, the brighter of the two</td></tr><tr><td>Heard you, thinking</td><td>solid, dimmed, same colour</td></tr><tr><td>Speaking</td><td>the same slow amber pulse, well under listening’s brightness</td></tr><tr><td>Recording (adult-initiated)</td><td>solid red</td></tr><tr><td>Muted</td><td>dark, because its 5 V is cut</td></tr></tbody></table>
 <p>The states differ by <strong>motion</strong>, not only by colour, so they survive colour
 blindness and a glance: a slow pulse against a steady glow, the pulse brighter
 of the two.</p>
 <p>Speaking was originally off (the eyes and mouth were to be its speaking
 presence); the owner reversed that on 2026-09-02 so the ring tracks the whole
 conversation, end to end: it moves exactly while words are being traded, and
-dark means the conversation is over. Listening and speaking are separated by
-pulse rate alone, which the Amazon note below warns about for UNRELATED
-states; these two are adjacent phases of one conversation, where “faster
-while it talks” reads as the tempo of the exchange rather than as a second
-vocabulary to memorise.</p>
+dark means the conversation is over. The first cut separated listening from
+speaking by pulse rate and lasted one bench session: at the next speed step
+the pulse read as flashing and, at listening’s brightness, as blinding (the
+Amazon note below, proven locally). So the two share the slow pulse and are
+separated by brightness - bright means waiting on you, soft means answering -
+which is safe for this one pair because the robot’s own voice is the real
+disambiguator: when it is talking, you can hear it. The soft default (36/18)
+is a bench guess pending its own tuning session, overridable like the rest.</p>
 <p><strong>Brightness follows the room, not the clock.</strong> The array faces upward and
 lights the room rather than sitting on a shelf, and the usable band measured far
 lower and narrower than the hardware’s range suggests: full brightness was
