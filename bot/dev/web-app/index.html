@@ -106,11 +106,13 @@ so the site must come from the robot itself, never a separate host.</p>
 <code dir="auto">index.html</code>: hashed assets under <code dir="auto">/assets</code>, real files by path, and an
 SPA fallback that serves <code dir="auto">index.html</code> for client routes (<code dir="auto">robot/robot/api/site.py</code>).</li>
 <li>Unknown <code dir="auto">/api/*</code> paths still 404 as JSON; the catch-all never shadows the API.</li>
-<li>The SPA is explicit opt-in: set <code dir="auto">MAIPAI_WEB_DIR</code> to the built <code dir="auto">web/dist</code>.
-Until it carries every family surface the panel has (my data, proposals,
-people, Wi-Fi, persona, backup, the walkthrough), a stock deploy keeps
-serving the panel; the parity checklist is a repo issue. <code dir="auto">MAIPAI_WEB_PORT</code>
-(0 = off) turns the whole web surface on; the shipped systemd unit sets 8080.</li>
+<li>A built <code dir="auto">web/dist</code> in the checkout is served automatically (building it is
+the opt-in); <code dir="auto">MAIPAI_WEB_DIR</code> points at a build elsewhere, and with no
+build the panel serves. Until the SPA carries every panel surface (my
+data, proposals, people, Wi-Fi, persona, backup, the walkthrough), a
+machine that needs those keeps the panel by not building <code dir="auto">web/dist</code>; the
+parity checklist is a repo issue. <code dir="auto">MAIPAI_WEB_PORT</code> (0 = off) turns the
+whole web surface on; the shipped systemd unit sets 8080.</li>
 </ul>
 <h2 id="pages">Pages</h2>
 <ul>
@@ -132,9 +134,9 @@ schema’s own plain-language reason.</li>
 <p>A simulator run prints the one-time pairing code to the terminal (it has no
 screen to show it on), and waives the knob press: a simulated knob cannot
 witness a real person, so claiming takes the same audited no-witness path
-as a body with no knob fitted. Add <code dir="auto">MAIPAI_WEB_DIR=$PWD/../web/dist</code> to the
-command above to serve the SPA, or run <code dir="auto">cd web &#x26;&#x26; bun run dev</code> for hot
-reload (the Vite proxy forwards <code dir="auto">/api</code>, including the websocket).</p>
+as a body with no knob fitted. A built <code dir="auto">web/dist</code> is picked up
+automatically; run <code dir="auto">cd web &#x26;&#x26; bun run dev</code> instead for hot reload (the
+Vite proxy forwards <code dir="auto">/api</code>, including the websocket).</p>
 <p><code dir="auto">scripts/check.sh</code> lints, typechecks, and builds the site when bun is
 installed. <code dir="auto">web/dist</code> is never committed; deploys build it.</p>
 <h2 id="next-increments">Next increments</h2>
