@@ -368,8 +368,12 @@ it sends only the tail, otherwise it clears and re-reads. A clipped reply, a
 trimmed history or a new conversation all re-read, which is the honest thing:
 the runtime must never believe it said what the room did not hear. The prompt
 is rendered as ChatML by hand, because a one-message structured prompt would
-have the model’s template insert its own default system line. The bench
-(<code dir="auto">bench.chat --hailo &#x3C;hef></code>) talks to the same adapter.</p>
+have the model’s template insert its own default system line.</p>
+<p><strong>One model per HAT.</strong> The runtime holds a single KV cache: a second process
+loading a language model while the robot holds one fails with “KV-Cache is
+already in use by another model” (measured 2026-09-03). That is the other
+reason the model is in-process, and it means the bench (<code dir="auto">bench.chat --hailo &#x3C;hef></code>, the same adapter) runs with the robot stopped:
+<code dir="auto">sudo systemctl stop maipai-bot.service</code> first, <code dir="auto">start</code> after.</p>
 <h2 id="the-job-not-the-model-the-narrowed-chat-turn-2026-09-03">The job, not the model: the narrowed chat turn (2026-09-03)</h2>
 <p>The table above scores the model against a prompt that asked it to know,
 judge, hold a persona and phrase at once. Three of those left the prompt (see
