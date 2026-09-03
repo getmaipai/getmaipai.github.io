@@ -1389,17 +1389,26 @@ times out and overflows on load.</p>
 
 
 
-<table><thead><tr><th>model</th><th>where</th><th>old prompt</th><th>narrowed, raw</th><th>narrowed, guarded</th></tr></thead><tbody><tr><td>qwen3-0.6b</td><td>CPU</td><td>45/81, 14/24 (56%)</td><td>61/81, 10/24 (68%)</td><td>62/81, 10/24 (69%)</td></tr><tr><td>qwen3-1.7b</td><td>CPU</td><td>78/81, 18/24 (91%)</td><td>74/81, 19/24 (89%)</td><td>80/81, 19/24 (94%)</td></tr><tr><td>Qwen2.5 1.5B</td><td>Hailo-10H</td><td>49/81, 16/24 (62%)</td><td>58/81, 15/24 (70%)</td><td>67/81, 15/24 (78%)</td></tr></tbody></table>
-<p>The guards are deterministic, so every saved run was also re-scored offline
-through the final guards (<code dir="auto">bench.honesty --json</code> keeps every reply): the
-first narrowed Hailo run went 70% raw to 84% guarded, the 1.7B’s first run
-91% to 94%. What the numbers say: the narrowed job lifts every model, the
-1.7B class clears the bar on the CPU and would on the HAT, and the 1.5B the
-Pi’s runtime can load lands at 78% on its final run (84% when its first run’s
-replies are re-scored through the same guards): short of the bar, and short
-by the model, not the job. Its remaining failures are the ones no guard can
-see from outside - a made-up quote from a person the household does know, a
-weather report for Denver, a recall it declines. The 0.6B’s recall falls under the
+
+
+
+
+
+
+
+<table><thead><tr><th>model</th><th>where</th><th>old prompt</th><th>narrowed, raw</th><th>narrowed, guarded</th></tr></thead><tbody><tr><td>qwen3-0.6b</td><td>CPU</td><td>45/81, 14/24 (56%)</td><td>61/81, 10/24 (68%)</td><td>63/81, 10/24 (70%)</td></tr><tr><td>qwen3-1.7b</td><td>CPU</td><td>78/81, 18/24 (91%)</td><td>74/81, 19/24 (89%)</td><td>80/81, 19/24 (94%)</td></tr><tr><td>Qwen2.5 1.5B</td><td>Hailo-10H</td><td>49/81, 16/24 (62%)</td><td>58/81, 15/24 (70%)</td><td>68/81, 15/24 (79%)</td></tr><tr><td><strong>Qwen3 1.7B</strong></td><td><strong>Hailo-10H</strong></td><td>-</td><td>63/81, 23/24 (82%)</td><td><strong>77/81, 23/24 (95%)</strong></td></tr></tbody></table>
+<p>The guards are deterministic, so every saved run was re-scored offline
+through the final set (<code dir="auto">bench.honesty --json</code> keeps every reply; the guarded
+column above is that re-score). What the numbers say: the narrowed job lifts
+every model; the 1.5B the 5.1.1 runtime could load stays short of the bar by
+the model, not the job (its first run re-scores to 85%, its second to 79%);
+and Qwen3-1.7B on the HAT, once the 5.3.0 runtime was in (next section), is
+the on-robot answer at 95% - recall 23 of 24, which neither CPU run reached,
+and four traps left of 81. Its raw traps were weaker than the same model on
+the CPU (78% against 91%): the HAT’s A8W4 build reaches for the nearest fact
+it holds (“when is my flight” answered with the dentist), and that is exactly
+the shape the last two guards catch (an event no source mentions answered
+with a time; a memory line said back to a question it does not answer). The 0.6B’s recall falls under the
 turn rule (it refuses more) while its traps improve, which is the same
 finding as before in a different suit: it cannot do recall reliably either
 way.</p>
@@ -1444,4 +1453,16 @@ Gen-AI zoo’s <code dir="auto">hailo-ollama</code> has no group setting at 5.1.
 talks to the HAT through <code dir="auto">hailo_platform.genai.LLM</code> in its own process.</li>
 <li><code dir="auto">hailo-models</code> (the vision HEFs from Raspberry Pi OS) load unchanged on
 5.3.0; <code dir="auto">python3-hailo-tappas</code> 5.1.0 stays installed and unused.</li>
-</ul> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/dev/hardware/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Hardware record</span> </span> </a> <a href="/bot/dev/contributing/" rel="next" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>  <span class="astro-u2l5gyhi"> Next <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Contributing</span> </span> </a> </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>
+</ul>
+<p>Measured on it, Qwen3-1.7B-Instruct (Hailo’s A8W4 build) beside the live
+vision pipeline, through <code dir="auto">hailo_platform.genai.LLM</code> in the SHARED group: the
+robot’s 275-token prompt read in 2.5 s (about 110 tokens a second; the 1.5B
+read at 220), 4.8 tokens a second generated, first token in 0.62 s when the
+runtime keeps the conversation context and only the new turn is sent. A short
+answer is 4.6-6.9 s with the prompt re-read every turn and 2.7-4 s with the
+context kept, which is the argument for moving the clock line out of the
+system prompt. Honesty 82% raw and 95% after the guards (table above). The
+CPU is free for speech throughout. This is the on-robot conversational model
+this robot was waiting for; the placement setting Jesse named (Hailo only,
+Hailo then hub, hub then Hailo) is the follow-up, over the existing
+<code dir="auto">FallbackLanguageModel</code>.</p> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/dev/hardware/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Hardware record</span> </span> </a> <a href="/bot/dev/contributing/" rel="next" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>  <span class="astro-u2l5gyhi"> Next <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Contributing</span> </span> </a> </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>

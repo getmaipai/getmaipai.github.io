@@ -375,14 +375,23 @@ re-scored offline without a model run.</p>
 
 
 
-<table><thead><tr><th>model</th><th>where</th><th>old prompt</th><th>narrowed, raw</th><th>narrowed, guarded</th></tr></thead><tbody><tr><td>qwen3-0.6b</td><td>CPU</td><td>56%</td><td>68%</td><td>69%</td></tr><tr><td>qwen3-1.7b</td><td>CPU</td><td>91%</td><td>89%</td><td>94%</td></tr><tr><td>Qwen2.5 1.5B</td><td>Hailo-10H</td><td>62%</td><td>70%</td><td>78%</td></tr></tbody></table>
-<p>The Hailo-10H reads a 326-token prompt in 1.5 s (about 220 tokens a second)
-and generates at 6.8 tokens a second beside the live vision pipeline; the
+
+
+
+
+
+
+
+<table><thead><tr><th>model</th><th>where</th><th>old prompt</th><th>narrowed, raw</th><th>narrowed, guarded</th></tr></thead><tbody><tr><td>qwen3-0.6b</td><td>CPU</td><td>56%</td><td>68%</td><td>70%</td></tr><tr><td>qwen3-1.7b</td><td>CPU</td><td>91%</td><td>89%</td><td>94%</td></tr><tr><td>Qwen2.5 1.5B</td><td>Hailo-10H</td><td>62%</td><td>70%</td><td>79%</td></tr><tr><td><strong>Qwen3 1.7B</strong></td><td><strong>Hailo-10H</strong></td><td>-</td><td>82%</td><td><strong>95%</strong></td></tr></tbody></table>
+<p>On the HAT beside the live vision pipeline, the 1.5B reads a 326-token prompt
+in 1.5 s (about 220 tokens a second) and generates at 6.8 tokens a second;
+Qwen3-1.7B reads at about 110 tokens a second, generates at 4.8, and gives a
+first token in 0.62 s when the runtime keeps the conversation context. The
 1.7B on the CPU reads at 27-40 tokens a second and cannot answer in under
-3.5 s. Hailo’s Qwen3-1.7B build needs HailoRT 5.3.0, which Raspberry Pi OS
-does not ship; the 5.3.0 file crashes the 5.1.1 runtime on load, and the
-crash took the vision pipeline down with it, so the LLM process is supervised
-like a driver whenever it shares the HAT.</p>
+3.5 s. Qwen3-1.7B needs HailoRT 5.3.0, which Raspberry Pi OS does not ship;
+the design record has the by-hand install. A crashing LLM process on the
+shared HAT took the vision pipeline down with it once, so whatever runs the
+model is supervised like a driver.</p>
 <h2 id="what-is-actually-running">What is actually running</h2>
 <div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#abb2bf">/etc/systemd/system/maipai-llm.service   llama.cpp, port 11435</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">/opt/maipai-llm/lib/                     the engine, 22 MB</span></div></div><div class="ec-line"><div class="code"><span style="--0:#abb2bf">/var/lib/maipai-llm/Qwen3-0.6B-Q4_K_M.gguf</span></div></div></code></pre><div class="copy"><button title="Copy to clipboard" data-copied="Copied!" data-code="/etc/systemd/system/maipai-llm.service   llama.cpp, port 11435/opt/maipai-llm/lib/                     the engine, 22 MB/var/lib/maipai-llm/Qwen3-0.6B-Q4_K_M.gguf"><div></div></button></div></figure></div>
 <p>Ollama is removed - binary, install and blobs, about 5 GB. The engine was
