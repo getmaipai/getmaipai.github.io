@@ -2141,8 +2141,18 @@ directly, with a search as the last resort. It speaks the recommended age and
 the one-line “parents need to know”, from the page’s JSON-LD and its own
 “Parents need to know that…” paragraph. Never a guess: no review found, and
 it says so and points to Common Sense Media.</p>
-<p>Two of Home’s tools are held, on purpose: <strong>showtimes</strong> (Fandango’s
-undocumented endpoint needs browser-header spoofing, against the “we are the
-user, honestly” rule) and <strong>maps/places</strong> (its offline geocoder is a per-region
-SQLite built on-device from OpenStreetMap; the data is not in the repo, so it
-needs a build pipeline before it can ship). Both remain honest declines.</p> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/dev/hardware/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Hardware record</span> </span> </a> <a href="/bot/dev/contributing/" rel="next" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>  <span class="astro-u2l5gyhi"> Next <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Contributing</span> </span> </a> </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>
+<p><strong>Showtimes</strong> was held, then built once Jesse settled the header question
+(2026-09-03): “build the showtimes because the bot is a person too.” The rule
+bars header tricks BEYOND what the platform’s own app sends. A person checking
+Fandango opens it in a browser, and their browser sends a User-Agent, an
+Accept-Language and a Referer; the robot browsing Fandango as the household
+sends the same, which is being the user’s own client, not spoofing past it. So
+the showtimes skill reads Fandango’s endpoint with a browser client and a ZIP
+(from the question, or the household location reverse-geocoded once via
+OpenStreetMap’s Nominatim), and speaks a couple of titles with their next
+time. The endpoint is undocumented, so a failure is an honest “I couldn’t pull
+up showtimes”, never a guess.</p>
+<p>One of Home’s tools is still held: <strong>maps/places</strong> (its offline geocoder is a
+per-region SQLite built on-device from OpenStreetMap; the data is not in the
+repo, so it needs a build pipeline before it can ship). It remains an honest
+decline.</p> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/dev/hardware/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Hardware record</span> </span> </a> <a href="/bot/dev/contributing/" rel="next" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>  <span class="astro-u2l5gyhi"> Next <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Contributing</span> </span> </a> </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>
