@@ -1192,12 +1192,36 @@ falling to a 0.6B chat model whose honesty rules rightly forbade an answer
 while three real sources sat unconsulted. Knowledge questions (“who is X”,
 “who wrote X”, “tell me about X”) now route by pattern to the lookup skill,
 which walks family memory first (somebody the household knows is never
-web-searched), then the installed offline encyclopedia, then Wikipedia’s own
-API over the limited web tool - title search then summary, so a misspelling
-still lands, a disambiguation page is refused rather than guessed, and the
-answer names its source in the same breath. The web link is behind the
-household’s knowledge switch (on by default, the weather rule: it fires only
-on a deliberate spoken question and carries only that question’s subject) and
-a per-host token bucket. Questions about the robot, the speaker, or a pronoun
-are excluded by the same patterns; they belong to their own skills and to the
-conversation.</p> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/dev/hardware/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Hardware record</span> </span> </a> <a href="/bot/dev/contributing/" rel="next" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>  <span class="astro-u2l5gyhi"> Next <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Contributing</span> </span> </a> </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>
+web-searched), then the installed offline encyclopedia, then Wikipedia over
+the limited web tool. The web link took three bench rounds to get right, and
+each step is deterministic where it can be:</p>
+<ul>
+<li><strong>Retrieval:</strong> full-text search for the top three pages, with subject
+cleaning first (“the book IT” becomes “IT book”, because the filler noun
+otherwise dominates and the search lands on The Book of Mormon).</li>
+<li><strong>The COMMON answer wins, by pageviews.</strong> Relevance ranked an Australian
+footballer above the author for “steven king”; one batched pageviews
+request re-ranks the candidates by what people actually read (the author
+out-draws the footballer thirteen to one). A name that CONFLICTS with the
+asked one leaves the pool first - spelling variants survive (steven ~
+stephen) but “who is John Ritter” must never come back about Jason Ritter,
+however well his page is doing this week.</li>
+<li><strong>The model only ever gets a yes/no.</strong> A top title that IS the subject
+answers itself. Otherwise the local model is asked whether the picked page
+is what they meant - binary, because that is the shape a 0.6B answers
+reliably (a three-way title pick measured “none”-happy and lost
+“volcanoes” with Volcano sitting first). A no is an honest miss, so junk
+retrievals are never read out.</li>
+<li><strong>One sentence.</strong> The spoken reply is the summary’s first sentence with
+parenthetical asides stripped, plus its source: “Stephen King is an
+American author. That’s from Wikipedia.” The rest of the page stays a
+follow-up away (the owner’s bar, 2026-09-02: the common answer, never a
+dissertation unless probed).</li>
+</ul>
+<p>The web link is behind the household’s knowledge switch (on by default, the
+weather rule: it fires only on a deliberate spoken question and carries only
+that question’s subject) and a per-host token bucket sized to a curious human
+(four questions in a burst, one per four seconds sustained, three hundred a
+day). A disambiguation page is refused rather than guessed. Questions about
+the robot, the speaker, or a pronoun are excluded by the routing patterns;
+they belong to their own skills and to the conversation.</p> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/dev/hardware/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Hardware record</span> </span> </a> <a href="/bot/dev/contributing/" rel="next" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>  <span class="astro-u2l5gyhi"> Next <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Contributing</span> </span> </a> </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>
