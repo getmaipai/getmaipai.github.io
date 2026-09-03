@@ -234,7 +234,7 @@ confident wrong number is worse than an admitted gap.</p>
 <p>When the Pico 2 face controller is fitted (see below) it takes over the eyes
 and the mouth, freeing GPIO 6, 7, 8, 10, 11, 19 and 25. Both allocations stay
 in this table: the Pi-driven path still works and is what the bench uses today.</p>
-<p>Not on GPIOs: AI HAT+ 2 (PCIe FPC, /dev/hailo0 on the 5.1.1 driver, /dev/h1x-0 on 5.3.0), touchscreen (DSI on CAM/DISP 0 plus its own touch I2C; 5 V
+<p>Not on GPIOs: AI HAT+ 2 (PCIe FPC, /dev/hailo0 on the 5.1.1 driver, /dev/h1x-0 on 5.3.0; hosts vision and the conversation model), touchscreen (DSI on CAM/DISP 0 plus its own touch I2C; 5 V
 from header pin 4, GND pin 34), camera (CSI on CAM/DISP 1), mic array, lidar, rear camera and hub (USB), RTC (own
 connector), soft-power button (the Pi 5 J2 header, never GPIO 3), e-stop and
 bumper switches (power interruptions, no sense line). The mic-cut switch left
