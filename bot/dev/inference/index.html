@@ -338,7 +338,7 @@ the model to re-test first.</p>
 own process, through <code dir="auto">robot/cognition/llm/hailo.py</code>. Measured beside the live
 vision pipeline: Qwen3-1.7B reads the prompt at about 110 tokens a second,
 generates at 4.8, gives a first token in 0.6 s when the runtime keeps the
-conversation and 2.5 s when it re-reads the whole prompt, and scores 95% on
+conversation and 2.5 s when it re-reads the whole prompt, and scores 96% on
 the honesty bench after the guards. The CPU is free for speech throughout.
 The llama-server path above stays as the fallback and the bench stack.</p>
 <p><strong>Choosing it.</strong> <code dir="auto">llm_backend</code> (env <code dir="auto">MAIPAI_LLM_BACKEND</code>) is <code dir="auto">auto</code> by
@@ -423,7 +423,7 @@ re-scored offline without a model run.</p>
 
 
 
-<table><thead><tr><th>model</th><th>where</th><th>old prompt</th><th>narrowed, raw</th><th>narrowed, guarded</th></tr></thead><tbody><tr><td>qwen3-0.6b</td><td>CPU</td><td>56%</td><td>68%</td><td>70%</td></tr><tr><td>qwen3-1.7b</td><td>CPU</td><td>91%</td><td>89%</td><td>94%</td></tr><tr><td>Qwen2.5 1.5B</td><td>Hailo-10H</td><td>62%</td><td>70%</td><td>79%</td></tr><tr><td><strong>Qwen3 1.7B</strong></td><td><strong>Hailo-10H</strong></td><td>-</td><td>82%</td><td><strong>95%</strong></td></tr></tbody></table>
+<table><thead><tr><th>model</th><th>where</th><th>old prompt</th><th>narrowed, raw</th><th>narrowed, guarded</th></tr></thead><tbody><tr><td>qwen3-0.6b</td><td>CPU</td><td>56%</td><td>68%</td><td>79%</td></tr><tr><td>qwen3-1.7b</td><td>CPU</td><td>91%</td><td>89%</td><td>95%</td></tr><tr><td>Qwen2.5 1.5B</td><td>Hailo-10H</td><td>62%</td><td>70%</td><td>83%</td></tr><tr><td><strong>Qwen3 1.7B</strong></td><td><strong>Hailo-10H</strong></td><td>-</td><td>82%</td><td><strong>96%</strong></td></tr></tbody></table>
 <p>On the HAT beside the live vision pipeline, the 1.5B reads a 326-token prompt
 in 1.5 s (about 220 tokens a second) and generates at 6.8 tokens a second;
 Qwen3-1.7B reads at about 110 tokens a second, generates at 4.8, and gives a

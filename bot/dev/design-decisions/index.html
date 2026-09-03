@@ -1396,14 +1396,14 @@ times out and overflows on load.</p>
 
 
 
-<table><thead><tr><th>model</th><th>where</th><th>old prompt</th><th>narrowed, raw</th><th>narrowed, guarded</th></tr></thead><tbody><tr><td>qwen3-0.6b</td><td>CPU</td><td>45/81, 14/24 (56%)</td><td>61/81, 10/24 (68%)</td><td>63/81, 10/24 (70%)</td></tr><tr><td>qwen3-1.7b</td><td>CPU</td><td>78/81, 18/24 (91%)</td><td>74/81, 19/24 (89%)</td><td>80/81, 19/24 (94%)</td></tr><tr><td>Qwen2.5 1.5B</td><td>Hailo-10H</td><td>49/81, 16/24 (62%)</td><td>58/81, 15/24 (70%)</td><td>68/81, 15/24 (79%)</td></tr><tr><td><strong>Qwen3 1.7B</strong></td><td><strong>Hailo-10H</strong></td><td>-</td><td>63/81, 23/24 (82%)</td><td><strong>77/81, 23/24 (95%)</strong></td></tr></tbody></table>
+<table><thead><tr><th>model</th><th>where</th><th>old prompt</th><th>narrowed, raw</th><th>narrowed, guarded</th></tr></thead><tbody><tr><td>qwen3-0.6b</td><td>CPU</td><td>45/81, 14/24 (56%)</td><td>61/81, 10/24 (68%)</td><td>73/81, 10/24 (79%)</td></tr><tr><td>qwen3-1.7b</td><td>CPU</td><td>78/81, 18/24 (91%)</td><td>74/81, 19/24 (89%)</td><td>81/81, 19/24 (95%)</td></tr><tr><td>Qwen2.5 1.5B</td><td>Hailo-10H</td><td>49/81, 16/24 (62%)</td><td>58/81, 15/24 (70%)</td><td>72/81, 15/24 (83%)</td></tr><tr><td><strong>Qwen3 1.7B</strong></td><td><strong>Hailo-10H</strong></td><td>-</td><td>63/81, 23/24 (82%)</td><td><strong>78/81, 23/24 (96%)</strong></td></tr></tbody></table>
 <p>The guards are deterministic, so every saved run was re-scored offline
 through the final set (<code dir="auto">bench.honesty --json</code> keeps every reply; the guarded
 column above is that re-score). What the numbers say: the narrowed job lifts
 every model; the 1.5B the 5.1.1 runtime could load stays short of the bar by
-the model, not the job (its first run re-scores to 85%, its second to 79%);
+the model, not the job (its first run re-scores to 88%, its second to 83%);
 and Qwen3-1.7B on the HAT, once the 5.3.0 runtime was in (next section), is
-the on-robot answer at 95% - recall 23 of 24, which neither CPU run reached,
+the on-robot answer at 96% - recall 23 of 24, which neither CPU run reached,
 and four traps left of 81. Its raw traps were weaker than the same model on
 the CPU (78% against 91%): the HAT’s A8W4 build reaches for the nearest fact
 it holds (“when is my flight” answered with the dentist), and that is exactly
@@ -1461,7 +1461,7 @@ read at 220), 4.8 tokens a second generated, first token in 0.62 s when the
 runtime keeps the conversation context and only the new turn is sent. A short
 answer is 4.6-6.9 s with the prompt re-read every turn and 2.7-4 s with the
 context kept, which is the argument for moving the clock line out of the
-system prompt. Honesty 82% raw and 95% after the guards (table above). The
+system prompt. Honesty 82% raw and 96% after the guards (table above). The
 CPU is free for speech throughout. This is the on-robot conversational model
 this robot was waiting for; the placement setting Jesse named (Hailo only,
 Hailo then hub, hub then Hailo) is the follow-up, over the existing
@@ -1496,4 +1496,11 @@ model’s own template inserts a default system line when a prompt has none.</li
 9 frames a second of scheduler share (from 55), which is plenty to notice a
 person; the model is unaffected by vision. Pose loads in the pipeline but was
 not exercised on 5.3.0 with a person in frame; the first one who stands in
-front of the camera is the check.</p> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/dev/hardware/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Hardware record</span> </span> </a> <a href="/bot/dev/contributing/" rel="next" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>  <span class="astro-u2l5gyhi"> Next <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Contributing</span> </span> </a> </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>
+front of the camera is the check.</p>
+<p>The first conversation through the whole stack on the HAT model (bench.chat
+with the robot paused) was honest end to end and showed the one gap that is
+not the model’s: told “my dog is called Bramble” and asked a turn later, it
+said it did not remember. Nothing yet turns a fact said in conversation into a
+stored one (the audit’s memory-judge finding), so the memory block the model
+answers from never held it. That is the next piece of the conversation work,
+and it lives in the judge and the remember offer, not in the prompt.</p> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/dev/hardware/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Hardware record</span> </span> </a> <a href="/bot/dev/contributing/" rel="next" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>  <span class="astro-u2l5gyhi"> Next <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Contributing</span> </span> </a> </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>
