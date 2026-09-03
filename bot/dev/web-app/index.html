@@ -101,6 +101,11 @@ enforcement half of this decision.</p>
 <p>Same-origin is load-bearing: the auth gate uses a cookie session with
 double-submit CSRF, and the events socket checks <code dir="auto">Origin</code> against <code dir="auto">Host</code>,
 so the site must come from the robot itself, never a separate host.</p>
+<p>Every mutation carries the double-submit header, so a POST that skips
+<code dir="auto">lib/api.ts</code> has to spread <code dir="auto">mutationHeaders()</code> into its own headers or the robot
+refuses it as <code dir="auto">auth.csrf_invalid</code>. The TTS stream is the one hand-rolled fetch
+(it reads the NDJSON body itself); <code dir="auto">tests/test_web_csrf_guard.py</code> fails the
+build if another one appears without the header.</p>
 <ul>
 <li><code dir="auto">create_app(..., web_dir=...)</code> mounts <code dir="auto">web/dist</code> when it holds an
 <code dir="auto">index.html</code>: hashed assets under <code dir="auto">/assets</code>, real files by path, and an
@@ -119,9 +124,22 @@ whole web surface on; the shipped systemd unit sets 8080.</li>
 <li><strong>Home</strong>: status card (<code dir="auto">/api/state</code>), privacy chips (recording and soft-mute
 heartbeats), selftest attention items. The battery renders only when
 <code dir="auto">pack_known</code> is true; an unmeasured pack draws nothing (the honesty rule).</li>
-<li><strong>Chat</strong>: <code dir="auto">POST /api/converse</code>, with live sentence streaming assembled from
-<code dir="auto">brain/say</code> frames on <code dir="auto">WS /api/events</code> when the session holds the
-<code dir="auto">microphone</code> capability; without it the posted reply renders whole.</li>
+<li><strong>Chat</strong>: <code dir="auto">POST /api/converse</code>, rendering only its own turns. It never
+subscribes to <code dir="auto">brain/say</code>, which carries the conversation happening out loud
+in the room, and a web turn never drives the robot’s speaker. The reply is
+spoken in the browser instead: <code dir="auto">POST /api/tts/stream</code> synthesizes the robot’s
+own Piper voice sentence by sentence as NDJSON PCM and <code dir="auto">lib/voice.ts</code> plays it
+through WebAudio. The speaker toggle is remembered per browser, and the audio
+context is opened on the send or the toggle, because a browser only starts
+audio from something the person did. The microphone button is the other
+direction: <code dir="auto">lib/mic.ts</code> opens the device at 16 kHz mono with the browser’s own
+echo cancellation, noise suppression and gain control (load-bearing - without
+the first one the robot transcribes its own reply back to itself), and
+<code dir="auto">lib/listen.ts</code> streams int16 to <code dir="auto">WS /api/stt/stream</code>, which transcribes with
+the model the robot already has loaded and publishes nothing to the bus. It is
+gated on <code dir="auto">microphone</code>, not <code dir="auto">converse</code>: a transcript of someone’s speech is
+what that right governs. <code dir="auto">plans/web-hands-free-plan.md</code> has the staged plan
+for VAD, barge-in and a wake word on top of this.</li>
 <li><strong>Call</strong>: telepresence signaling state (<code dir="auto">/api/call</code>), answer/decline/hangup.
 Live audio and video are not wired yet and the page says so.</li>
 <li><strong>Settings</strong>: rendered entirely from <code dir="auto">GET /api/settings/schema</code>, so the page
