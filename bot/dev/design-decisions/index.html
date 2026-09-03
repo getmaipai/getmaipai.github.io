@@ -2032,7 +2032,19 @@ holding?” fell to chat and were answered with invented detail (a cozy blanket,
 a warm brown chair). They route to the sight skill now: no camera, and it says
 so; a camera but no scene model yet, and it says it can see something is there
 but cannot make out colours or held objects. It never invents the scene.</p>
-<p>Still open, filed for the next pass: robot-state fabrication (a made-up battery
-percentage, “my cameras are working”) wants a state skill that answers from
-health, and the interaction judge itself wants the stronger CPU model before
-its verdicts can be trusted as a gate.</p> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/dev/hardware/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Hardware record</span> </span> </a> <a href="/bot/dev/contributing/" rel="next" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>  <span class="astro-u2l5gyhi"> Next <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Contributing</span> </span> </a> </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>
+<p><strong>The robot’s own state is a reading, not a guess.</strong> “How much battery do you
+have?” was answered “I’m at 95% charge”, “Are you charging?” got “no charge at
+all”, “Are your cameras working?” got “I think I heard a camera click” - all
+invented. A <code dir="auto">robot_state</code> skill now answers battery, charging, sensor status
+and movement speed from the live gauge, the charging line (wired through as a
+tri-state so “no power sensor” is honest, never a guessed no), and the
+capability health. No gauge means “I don’t have a battery gauge I can read
+right now”, never a number.</p>
+<p><strong>A named attribute of a place goes to the encyclopedia.</strong> “What’s the capital
+of Brazil?” fell to chat and came back empty. “the capital / population /
+currency / area of X” now looks up the entity and lets the grounded pass
+answer the attribute from its article, scoped tightly enough that “how many
+people are here” (the camera) and “what do you think about Brazil” (chat) are
+untouched.</p>
+<p>Still open: the interaction judge wants the stronger CPU model before its
+verdicts can gate automatically, so triage stays by hand until that lands.</p> </div> <footer class="sl-flex astro-3yyafb3n"> <div class="meta sl-flex astro-3yyafb3n">   </div> <div class="pagination-links print:hidden astro-u2l5gyhi" dir="ltr"> <a href="/bot/dev/hardware/" rel="prev" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg>  <span class="astro-u2l5gyhi"> Previous <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Hardware record</span> </span> </a> <a href="/bot/dev/contributing/" rel="next" class="astro-u2l5gyhi"> <svg aria-hidden="true" class="astro-u2l5gyhi astro-c6vsoqas" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>  <span class="astro-u2l5gyhi"> Next <br class="astro-u2l5gyhi"> <span class="link-title astro-u2l5gyhi">Contributing</span> </span> </a> </div>   </footer>  </div> </div>   </main> </div> </div>  </div> </div>  </body></html>
