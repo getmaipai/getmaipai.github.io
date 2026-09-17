@@ -43,6 +43,26 @@
   .soon { display: inline-block; color: var(--muted); font-weight: 600; font-size: 0.92rem;
           border: 1.5px solid var(--line); border-radius: 999px; padding: 0.5rem 1.2rem; }
 
+  .fit { padding: 0 1.5rem 4.5rem; }
+  .fit h2 { text-align: center; font-size: 1.5rem; letter-spacing: -0.01em; margin-bottom: 0.5rem; }
+  .fit p.lead { text-align: center; color: var(--muted); max-width: 40rem; margin: 0 auto 2rem; }
+  .layers { display: grid; gap: 0.75rem; max-width: 46rem; margin: 0 auto; }
+  .layer { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1rem; align-items: stretch; }
+  .layer .label { font-size: 0.78rem; font-weight: 600; color: var(--muted); text-transform: uppercase;
+                  letter-spacing: 0.06em; padding-top: 0.9rem; }
+  .layer .row { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); }
+  .box { background: var(--card); border: 1px solid var(--line); border-radius: 0.9rem; padding: 0.85rem 1rem; }
+  .box b { display: block; font-size: 0.98rem; }
+  .box span { display: block; color: var(--muted); font-size: 0.85rem; line-height: 1.4; margin-top: 0.15rem; }
+  .box.wide { grid-column: 1 / -1; }
+  .box.base { border-color: var(--accent); }
+  .arrow { text-align: center; color: var(--muted); font-size: 1.1rem; line-height: 1; padding-left: 8.5rem; }
+  @media (max-width: 560px) { .layer { grid-template-columns: 1fr; } .layer .label { padding-top: 0; }
+                              .arrow { padding-left: 0; } }
+  .fit ul { max-width: 46rem; margin: 2.25rem auto 0; padding-left: 1.2rem; color: var(--muted); }
+  .fit li { margin: 0.4rem 0; }
+  .fit li b { color: var(--fg); }
+
   footer { border-top: 1px solid var(--line); padding: 2.75rem 1.5rem 3.25rem;
            text-align: center; font-size: 0.88rem; color: var(--muted); }
   footer a { color: inherit; }
@@ -99,6 +119,30 @@
   <div class="card">
     <div class="head">
       <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-brand-icon.png">
+        <img src="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-brand-icon.png" alt="">
+      </picture>
+      <div><h2>MaiPai Stack</h2><span class="tag">The foundation</span></div>
+    </div>
+    <p>Every engine and model behind MaiPai, installed, sized to your hardware, watched, updated and testable from one page, on your own computer, for you and anything you build on it.</p>
+    <div class="foot"><span class="soon">In the workshop</span></div>
+  </div>
+
+  <div class="card">
+    <div class="head">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-brand-icon.png">
+        <img src="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-brand-icon.png" alt="">
+      </picture>
+      <div><h2>MaiPai Catalog</h2><span class="tag">Packages</span></div>
+    </div>
+    <p>Every plugin, app, companion, integration, and model for your hub and robot, in one signed catalog you review and install with one click.</p>
+    <div class="foot"><span class="soon">In the workshop</span></div>
+  </div>
+
+  <div class="card">
+    <div class="head">
+      <picture>
         <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-bot-icon-dark.png">
         <img src="https://raw.githubusercontent.com/getmaipai/.github/main/brand/maipai-bot-icon-light.png" alt="">
       </picture>
@@ -107,6 +151,51 @@
     <p>A robot friend with its own onboard AI: it sees, hears, talks, thinks, moves, self-charges, and guards your home in sentry mode. It recognizes each person by face and voice, keeps its own memories, and learns and evolves with your family.</p>
     <div class="foot"><span class="soon">In the workshop</span></div>
   </div>
+</section>
+
+<section class="wrap fit">
+  <h2>How it fits together</h2>
+  <p class="lead">Six pieces, one house. Everything runs on your own hardware; the layers only talk to each other inside your home.</p>
+  <div class="layers">
+    <div class="layer">
+      <div class="label">Reach it</div>
+      <div class="row">
+        <div class="box"><b>MaiPai Go</b><span>iPhone and Apple TV</span></div>
+        <div class="box"><b>MaiPai Desktop</b><span>Mac and Windows</span></div>
+        <div class="box"><b>Any browser</b><span>on your home network</span></div>
+      </div>
+    </div>
+    <div class="arrow">&darr;</div>
+    <div class="layer">
+      <div class="label">Your home</div>
+      <div class="row">
+        <div class="box"><b>MaiPai Home</b><span>the hub: your family, memory, companions and apps, with kid-safe profiles</span></div>
+        <div class="box"><b>MaiPai Bot</b><span>the robot: pairs with Home when it is near, complete on its own when it is not</span></div>
+      </div>
+    </div>
+    <div class="arrow">&darr;</div>
+    <div class="layer">
+      <div class="label">The AI itself</div>
+      <div class="row">
+        <div class="box base"><b>MaiPai Stack</b><span>the engines and models, on your computer</span></div>
+        <div class="box base"><b>MaiPai Stack</b><span>a smaller one on board the robot</span></div>
+      </div>
+    </div>
+    <div class="arrow">&uarr;</div>
+    <div class="layer">
+      <div class="label">Add-ons</div>
+      <div class="row">
+        <div class="box wide"><b>MaiPai Catalog</b><span>plugins, apps, companions, voices and models, signed and reviewed; Home, Bot and the Stack all install from it</span></div>
+      </div>
+    </div>
+  </div>
+  <ul>
+    <li><b>The Stack</b> runs the AI: it installs the engines and models, sizes them to your computer, and keeps them healthy. You can run it by itself.</li>
+    <li><b>Home</b> sits on top and adds the people: profiles, memory, companions, apps, and the rules for kids.</li>
+    <li><b>Bot</b> carries its own Stack and its own copy of Home's brain, so it works alone and joins the family when it is in range.</li>
+    <li><b>Go and Desktop</b> are how you reach Home and Bot from a phone, a TV or a computer. They never talk to the Stack directly.</li>
+    <li><b>The Catalog</b> is where everything installable comes from, reviewed and signed, added with one click.</li>
+  </ul>
 </section>
 
 <footer>
